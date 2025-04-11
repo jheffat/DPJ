@@ -56,6 +56,7 @@ scan all files including in sub-directories on the current local
 ```bash
 dpj -s *.* -r  
 ```
+## Screenshots
 
 ## 🔐 Security Details
 
@@ -65,3 +66,8 @@ dpj -s *.* -r
 - No Overwrites: Files will not be altered if the provided passphrase is incorrect.
 - Hash Verification: A post-decryption hash ensures that the data was correctly restored.
 
+## 📜 License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙌 Acknowledgements
+DPJ(Data protection Jeff), was my first encryption app crafted in QBasic(CLI) and Visual Basic(GUI) between 2003–2007. This project is a modern revival with more power, speed, and security, thanks to the powerful language PYTHON. 
