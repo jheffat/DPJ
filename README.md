@@ -38,7 +38,7 @@ Developing....
 ```
 
 
-##🧪 Usage Examples
+## 🧪 Usage Examples
 ```bash
 dpj -e *.* -r -k #R3ds0ftwar3!len3zz    
 ```
