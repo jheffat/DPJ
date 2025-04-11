@@ -59,9 +59,9 @@ dpj -s *.* -r
 
 ## 🔐 Security Details
 
-KDF: Passphrases are transformed via a Key Derivation Function before use, making brute-force attempts extremely difficult.
-bcrypt: Passphrase hashes are stored using bcrypt to safely verify future attempts without revealing the key.
-AES Encryption: Both the file contents and the metadata (containing the bcrypt hash) are encrypted with AES.
-No Overwrites: Files will not be altered if the provided passphrase is incorrect.
-Hash Verification: A post-decryption hash ensures that the data was correctly restored.
+- KDF: Passphrases are transformed via a Key Derivation Function before use, making brute-force attempts extremely difficult.
+- bcrypt: Passphrase hashes are stored using bcrypt to safely verify future attempts without revealing the key.
+- AES Encryption: Both the file contents and the metadata (containing the bcrypt hash) are encrypted with AES.
+- No Overwrites: Files will not be altered if the provided passphrase is incorrect.
+- Hash Verification: A post-decryption hash ensures that the data was correctly restored.
 
