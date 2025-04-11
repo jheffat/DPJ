@@ -56,13 +56,14 @@ scan all files including in sub-directories on the current local
 ```bash
 dpj -s *.* -r  
 ```
-## Screenshots
+## 📷 Screenshots
+`List of Files ready to be encrypted`
 ![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/List%20to%20encrypt.png)
-
+`Encryption Process`
 ![](https://github.com/jheffat/-DPJ/blob/main/scrnsht/Encrypting.png)
-
+`Decryption Process`
 ![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/Decrypting.png)
-
+`Scanning files encrypted`
 ![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/Scaning%20%20encrypted%20file.png)
 
 
