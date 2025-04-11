@@ -1,0 +1,17 @@
+# Include Python source files
+recursive-include dpj *
+
+# Include icon and other static files (like images, CSS, etc.)
+include assets/DPJ.ico
+
+# Include the README file for PyPI and packaging
+include README.md
+
+# Include LICENSE file
+include LICENSE
+
+# Optional: Include other documentation files (if any)
+include docs/*.md
+
+# If you have tests, include them in the distribution as well
+recursive-include tests *
