@@ -24,7 +24,7 @@ DPJ improves on Fixor with significantly faster encryption and decryption proces
 You can install DPJ 
   ++by cloning this repo:
 
-```bash
+```powershell
 git clone https://github.com/yourusername/dpj.git
 cd dpj
 python3 -m pip install
