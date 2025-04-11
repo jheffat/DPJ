@@ -40,8 +40,10 @@ Developing....
 
 
 ## 🧪 Usage Examples
+Encrypt all files including sub-directories with a key `#R3ds0ftwar3!len3zz`
 ```bash
 dpj -e *.* -r -k #R3ds0ftwar3!len3zz    
 ```
-Will encrypt all files including sub-directories with a key `#R3ds0ftwar3!len3zz`
+
+
 
