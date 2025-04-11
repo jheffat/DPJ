@@ -2,7 +2,7 @@
 
 ![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/intro.png)
 **DPJ** is a command-line file encryption tool, a complete rebuild and upgrade from the legacy **Fixor** project (v2.11 / v1.0). Name changed to DPJ 
- in honor of the original encryption tools developed in QBasic and Visual Basic (2003–2005), DPJ is faster, more secure, and packed with new features designed to keep your files safe.
+ in honor of the original encryption tools developed in QBasic and Visual Basic (2003–2005), DPJ is faster, more secure, and packed with new features designed to keep your files safe. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
 
 ## ⚡ Features
 
