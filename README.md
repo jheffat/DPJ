@@ -1,4 +1,4 @@
-# 🔐 DPJ - CLI File Encryption Tool
+# 🔐 DPJ - CLI File Encryption Tool(FiXOR)
 
 ![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/intro.png)
 **DPJ** is a command-line file encryption tool, a complete rebuild and upgrade from the legacy **Fixor** project (v2.11 / v1.0). Name changed to DPJ 
