@@ -1,10 +1,10 @@
 # 🔐 DPJ - CLI File Encryption Tool
 
-**DPJ** is a command-line file encryption tool, a complete rebuild and upgrade from the legacy **Fixor** project (v2.11 / v1.0). Named in honor of the original encryption tools developed in QBasic and Visual Basic (2003–2005), DPJ is faster, more secure, and packed with new features designed to keep your files safe.
+**DPJ** is a command-line file encryption tool, a complete rebuild and upgrade from the legacy **Fixor** project (v2.11 / v1.0). Name changedto DPJ in honor of the original encryption tools developed in QBasic and Visual Basic (2003–2005), DPJ is faster, more secure, and packed with new features designed to keep your files safe.
 
 ## ⚡ Features
 
-- 🔒 **Encrypt & Decrypt Files** using strong cryptography (AES)
+- 🔒 **Encrypt & Decrypt Files** using strong cryptography
 - 🧠 **Choose or Autogenerate Passphrase** for encryption
 - 🔐 **KDF-powered Key Derivation** to resist brute-force attacks
 - 🧂 **Secure Password Hashing with bcrypt** (stored in encrypted metadata)
@@ -24,4 +24,6 @@ You can install DPJ by cloning this repo:
 ```bash
 git clone https://github.com/yourusername/dpj.git
 cd dpj
-python3 -m pip install .
+python3 -m pip install 
+
+##🧪 Usage Examples
