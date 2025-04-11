@@ -57,7 +57,7 @@ scan all files including in sub-directories on the current local
 dpj -s *.* -r  
 ```
 ## Screenshots
-
+![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/List%20to%20encrypt.png"xxxx")
 ## 🔐 Security Details
 
 - KDF: Passphrases are transformed via a Key Derivation Function before use, making brute-force attempts extremely difficult.
