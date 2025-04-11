@@ -44,6 +44,18 @@ Encrypt all files including sub-directories with a key `#R3ds0ftwar3!len3zz`
 ```bash
 dpj -e *.* -r -k #R3ds0ftwar3!len3zz    
 ```
+Encrypt all files with the extension  `.JPG` on the current path `c:\pictures`
+```bash
+dpj -e  c:\pictures\*.jpg     
+```
+Decrypt all files including sub-directories 
+```bash
+dpj -d *.* -r  
+```
+scan all files including in sub-directories on the current local 
+```bash
+dpj -s *.* -r  
+```
 
 
 
