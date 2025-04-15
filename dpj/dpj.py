@@ -1,7 +1,7 @@
 #  -*- coding: utf-8 -*-
 from utils import *
-Password="";n=0;targets=[];op="";banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();statuspass="";state=False ;X_integrity=0;
-N_integrity=0      ;esc=0 ;posbyte=0                       
+Password="";n=0;targets=[];op="";banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();statuspass="";state=False ;
+esc=0 ;posbyte=0                       
 rootprocess="";k=""
 
 if platform.system()!="Windows":
@@ -9,16 +9,18 @@ if platform.system()!="Windows":
         print("--Permission denied--x_x")
         sleep(4)
         exit()
-parser = argparse.ArgumentParser(description="A simple CLI tool to encrypt/decrypt files")
+parser = argparse.ArgumentParser(description="A simple CLI tool to encrypt/decrypt/hash files")
     
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument("-e", "--encrypt",metavar="", type=str, help="Encrypt Files/Messages")
 group.add_argument("-d", "--decrypt",metavar="", type=str, help="Decrypt Files/Messages Encrypted")
 group.add_argument("-s", "--scan", metavar="",type=str, help="Scan for encrypted files")
+group.add_argument("-hs", "--hash", metavar="",type=str, help="Hash a File or a String.")
 
 g2=parser.add_argument_group("Optional Arguments", "These arguments are optional and provide additional features." )
 g2.add_argument("-r", "--recursive", action="store_true", help="Enable recursive, allowing to process subdirectories [OPTIONAL]")
 g2.add_argument("-k", "--key", type=str,metavar="KEY", help="Specify a Passphrase to encrypt/decrypt [OPTIONAL]")
+g2.add_argument("-a", "--algo", type=str,default="sha256", help="Choose an algorithm to hash (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5) or all, Default=sha256")
 
 
 try:    
@@ -28,7 +30,7 @@ except SystemExit as e:
      parser.print_help()
      helpscr()
      exit()
-
+          
 for argx, valuex in vars(args).items():
     if argx=='encrypt'or argx=='decrypt'or argx=='scan':
         if valuex!=None:
@@ -39,12 +41,143 @@ for argx, valuex in vars(args).items():
             else:
                 targets=glob.glob(valuex)
                 break
-   
+    if argx=="hash" and valuex!=None:   
+        if args.algo in ['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']:
+                hashfunction=getattr(hashlib, args.algo.lower())()  
+        elif args.algo=='all':
+            pass
+        else:
+            args.algo='sha256'
+            hashfunction=getattr(hashlib, args.algo)()
+                
+        if path.isfile(valuex):
+            targets=valuex  
+            print("\n║HASHING A FILE╠"+"═"*60+"╣")    
+            try:               
+                data=Filehandle(targets,0,-1) 
+                if args.algo!='all':                        
+                    hashfunction.update(data) 
+                    now=datetime.now()  
+                    timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}"
+                    if args.algo.startswith("shake_"):
+                        length=32
+                        digest = hashfunction.hexdigest(length*2)  
+                    else:
+                        length=hashfunction.digest_size
+                        digest = hashfunction.hexdigest() 
+                    print(f"⌛Timestamp: {timestamp} ")
+                    print(f"📄Filename: {targets}")
+                    print(f"🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                    print(f"🧬[{digest}]")
+                elif args.algo=='all':
+                    now=datetime.now()  
+                    timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
+                    print(f"⌛Timestamp: {timestamp} ")
+                    print(f"📄Filename: {targets}")
+                    for ha in sorted(['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']):
+                        hashfunction=getattr(hashlib, ha)()      
+                        hashfunction.update(data)
+                        if ha.startswith("shake_"):
+                            length=32
+                            digest = hashfunction.hexdigest(length*2)  
+                        else:
+                            length=hashfunction.digest_size
+                            digest = hashfunction.hexdigest() 
+                        print(f"🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                        print(f"🧬[{digest}]")    
+                print("═"*90+"\n")            
+            except Exception as e:
+                        print(f"🚫 Error - {e}")
+            exit("Done...")          
+        elif len(glob.glob(valuex))>1:
+            print("Collecting...")
+            if args.recursive:
+                targets=recursive(valuex)
+            else:
+                targets=glob.glob(valuex)   
+            print("\n║HASHING FILES╠"+"═"*60+"╣")
+            for f in targets: 
+                    try:               
+                        data=Filehandle(f,0,-1) 
+                        if args.algo!='all':                            
+                            hashfunction.update(data) 
+                            now=datetime.now()  
+                            timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
+                            if args.algo.startswith("shake_"):
+                                length=32
+                                digest = hashfunction.hexdigest(length*2)  
+                            else:
+                                length=hashfunction.digest_size
+                                digest = hashfunction.hexdigest() 
+                            print(f"⌛Timestamp: {timestamp} ")
+                            print(f"📄Filename: {f}")
+                            print(f"🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                            print(f"🧬[{digest}]")
+                            print("═"*90)
+                        elif args.algo=='all':
+                            now=datetime.now()  
+                            timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
+                            print(f"⌛Timestamp: {timestamp} ")
+                            print(f"📄Filename: {f}")
+                            for ha in sorted(['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']):
+                                hashfunction=getattr(hashlib, ha)()      
+                                hashfunction.update(data)
+                                if ha.startswith("shake_"):
+                                    length=32
+                                    digest = hashfunction.hexdigest(length*2)  
+                                else:
+                                    length=hashfunction.digest_size
+                                    digest = hashfunction.hexdigest()                                
+                                print(f"🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                                print(f"🧬[{digest}]")  
+                            print("═"*90)
+                    except Exception as e:
+                        notsucessed+=[f"🚫 Error - {e}"]
+            if notsucessed:
+                for errr in notsucessed:
+                    print(errr)
+            exit("Done...")                                                      
+        else:
+            targets=valuex 
+            print("\n║HASHING TEXT STRING╠"+"═"*60+"╣")
+            if args.algo!='all':
+                hashfunction.update(targets.encode('utf-8')) 
+                now=datetime.now()  
+                timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
+                if args.algo.startswith("shake_"):
+                    length=32
+                    digest = hashfunction.hexdigest(length*2)  
+                else:
+                    length=hashfunction.digest_size
+                    digest = hashfunction.hexdigest() 
+                print(f"⌛Timestamp: {timestamp} ")
+                print(f"📝Text: {targets}")   
+                print(f"🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                print(f"🧬[{digest}]")
+            elif args.algo=='all':
+                    now=datetime.now()  
+                    timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
+                    print(f"⌛Timestamp: {timestamp} ")
+                    print(f"📝Text: {targets}")
+                    for ha in sorted(['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']):
+                        hashfunction=getattr(hashlib, ha)()      
+                        hashfunction.update(targets.encode('utf-8')) 
+                        if ha.startswith("shake_"):
+                            length=32
+                            digest = hashfunction.hexdigest(length*2)  
+                        else:
+                            length=hashfunction.digest_size
+                            digest = hashfunction.hexdigest() 
+                        print(f"🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                        print(f"🧬[{digest}]")    
+            print("═"*90+"\n")        
+            exit("Done...")                 
+        
 if len(targets)==0:
      intro()
      parser.print_help()
      helpscr()
-     exit("No files Found...")
+     exit("No Result Found...")  
  
 if args.key: Password=args.key    
 if argx=="scan":
@@ -300,8 +433,7 @@ if argx=="decrypt":
                 fragdata=Filehandle(Filename,BytesPosition,BytesTarget)                     
                 intro()    
                 lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
-                lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}")
-                lprint(f"\n| CheckSum: ✅ {N_integrity}  ⛔ {X_integrity}\n")        
+                lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}")      
                 lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                 lprint(f"\n| Target: 📝{path.basename(Filename)}")
                 lprint(f"\n| Size: {bitscv}") 
@@ -312,10 +444,8 @@ if argx=="decrypt":
                 lprint("\n■Checking Data's Integrity...")
                 integrity=sha256(decryptdata).hexdigest()== F_hashed
                 if integrity==True:
-                    N_integrity+=1
                     lprint("✅")
                 else:
-                    X_integrity+=1;k=""
                     lprint("⛔")
                     print("\n☢️|CheckSum didn't match...")
                     print("[I]gnore the warning, try to decrypt the file and keep an original copy.")

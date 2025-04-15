@@ -2,14 +2,14 @@
 from shutil import copy2
 from string import ascii_letters,digits
 from os import system,path #,getuid #<---Only for Linux/MacOSX
-from  hashlib import sha256
+    
 from cryptography.fernet import Fernet,InvalidToken
-import glob, platform,re,keyboard, bcrypt,base64,argparse
+import glob, platform,re,keyboard, bcrypt,base64,argparse,hashlib
 from json import loads
 from secrets import choice
 from sys import exit, argv,stdout
 from time import sleep
-from datetime import date
+from datetime import datetime
 def KDF(Pass,Salt,bk,r):
     return  bcrypt.kdf(Pass,salt=Salt,desired_key_bytes=bk,rounds=r)
 
@@ -134,7 +134,7 @@ def intro():
         _ = system("clear")
     print("""  
     ____   ____      _ 
-   |  _ \ |  _ \    | |     🌍: https://icodexys.com
+   |  _ \ |  _ \    | |     🌍: https://icodexys.net
    | | | || |_) |_  | |     🔨: https://github.com/jheffat/-DPJ
    | |_| ||  __/| |_| |     📊: 3.00  (04/22/2025)
    |____/ |_|    \___/ 
@@ -172,10 +172,13 @@ def warning():
 
 def helpscr(): 
     print("""EXAMPLE: 
-          dpj -e mydiary.txt        -->Encrypt a specified file
-          dpj -e *.exe              -->Encrypt all files executable on a specified location
-          dpj -d  *.* -r            -->Decrypt all contents of that path, including subdirectories
-          dpj -e *.* -k m3@rl0n1 -->Encrypt all files with a specified KEY""")
+          dpj -e mydiary.txt        -->Encrypt a specified file mydiary.txt
+          dpj -e *.exe              -->Encrypt all files with the extension .EXE on a specified location
+          dpj -d *.* -r             -->Decrypt all files including files in subdirectories
+          dpj -e *.* -k m3@rl0n1    -->Encrypt all files with a specified KEY
+          dpj -s *.* -r             -->Scan all encrypted files including files in subdirectories
+          dpj -sh *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
+          """)
 global KeyGeneratedBase64
 KeyGeneratedBase64=base64.b64encode(KDF(b"#IC)D#X!Sd@t@pJ3ff",b"s87r444r4e4w4#s@^43",32,100)).decode()
-#Developed by Jheff Mat(iCODEXYS) 12/22/2022
+#Developed by Jheff Mat(iCODEXYS) since 02-11-2021
