@@ -11,10 +11,10 @@
 - 🔐 **KDF-powered Key Derivation** to resist brute-force attacks
 - 🧂 **Secure Password Hashing with bcrypt** (stored in encrypted metadata)
 - 🧬 **Encrypted Metadata** using AES to protect internal config
-- 🔍 **File Scan Mode** to check encryption status
-- ✅ **File Integrity Verification** via cryptographic hash
+- 🔍 **File Scan Mode** to check encryption details
+- ✅ **File Integrity Verification**, a built-in verification step checks whether the decrypted data matches the original, ensuring the decryption process was successful.
 - 🛡️ **Tamper Protection**: Files won’t be modified unless the passphrase is correct
-- #️⃣ **Hash tools included**: Hash files/Msg using any theses functions(sha2,sha3,md5, blake3, whirlpool)
+- #️⃣ **Hash tools included**: Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
 ## 🚀 Performance
 
 DPJ improves on Fixor with significantly faster encryption and decryption processes, optimized for modern systems and large files.
@@ -56,6 +56,10 @@ scan all files including in sub-directories on the current local
 ```bash
 dpj -s *.* -r  
 ```
+Hash all files using all algorithm 
+```bash
+dpj -hs *.* -a all
+```
 ## 📷 Screenshots
 `List of Files ready to be encrypted`
 ![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/List%20to%20encrypt.png)
@@ -65,8 +69,12 @@ dpj -s *.* -r
 ![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/Decrypting.png)
 `Scanning files encrypted`
 ![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/Scaning%20%20encrypted%20file.png)
-
-
+`Hashing a file`
+![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/hashing%20a%20file.png)
+`Hashing a file with all algorithms`
+![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/hashing%20a%20file%20with%20all.png)
+`Hashing all files using only the algorithm SHA256`
+![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/hashing%20all%20files.png)
 
 ## 🔐 Security Details
 
