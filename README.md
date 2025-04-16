@@ -1,6 +1,6 @@
 # 🔐 DPJ - CLI Data Cryptographic Tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Old version)
 
-![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/intro.png)
+![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/intro.png)
 **DPJ** is a command-line data encryption tool, a complete rebuild and upgrade from the legacy **Fixor** project (v2.50 / v1.0). Name changed to DPJ 
  in honor of the original name from encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
 
@@ -22,10 +22,11 @@ DPJ improves on Fixor with significantly faster encryption and decryption proces
 ## 🔧 Installation
 
 You can install DPJ 
+  
   ++by cloning this repo:
 
 ```bash
-git clone https://github.com/yourusername/dpj.git
+git clone https://github.com/jheffat/dpj.git
 cd dpj
 python3 -m pip install
 ``` 
@@ -35,7 +36,7 @@ pip install dpj
 ```
   ++Download and install executable :
 ```bash
-Developing....
+Underdevelop....Soon
 ```
 
 
@@ -62,19 +63,19 @@ dpj -hs *.* -a all
 ```
 ## 📷 Screenshots
 `List of Files ready to be encrypted`
-![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/List%20to%20encrypt.png)
+![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/List%20to%20encrypt.png)
 `Encryption Process`
-![](https://github.com/jheffat/-DPJ/blob/main/scrnsht/Encrypting.png)
+![](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/Encrypting.png)
 `Decryption Process`
-![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/Decrypting.png)
+![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/Decrypting.png)
 `Scanning files encrypted`
-![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/Scaning%20%20encrypted%20file.png)
+![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/Scaning%20%20encrypted%20file.png)
 `Hashing a file`
-![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/hashing%20a%20file.png)
+![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/hashing%20a%20file.png)
 `Hashing a file with all algorithms`
-![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/hashing%20a%20file%20with%20all.png)
+![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/hashing%20a%20file%20with%20all.png)
 `Hashing all files using only the algorithm SHA256`
-![Alt text](https://github.com/jheffat/-DPJ/blob/main/scrnsht/hashing%20all%20files.png)
+![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/hashing%20all%20files.png)
 
 ## 🔐 Security Details
 
