@@ -5,7 +5,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 setup(
     name="dpj",  # Name of the package
-    version="3.0.2",  # Version of the package
+    version="3.0.6",  # Version of the package
     description="A CLI Encryption Application",
     #long_description=open('README.md').read().encode('utf-8'),  # README file for project description
     long_description=long_description,
