@@ -308,7 +308,7 @@ def main():
                 lprint("✅")
                 
                 stdout.write("\n■Patching...")
-                dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+'","posbytes":"'+str(posbyte).rjust(15,"*")+'","tarbytes":"'+str(ldata).rjust(15,"*")+'","date":"'+str(date.today()).rjust(10,"*")+'","pass":"'+Pass_Hashed.rjust(120,"*")+'","integrity":"'+F_hashed.rjust(64,"*")+'","os":"'+platform.system().rjust(8,"*")+'","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
+                dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+'","posbytes":"'+str(posbyte).rjust(15,"*")+'","tarbytes":"'+str(ldata).rjust(15,"*")+'","date":"'+str(datetime.now().date()).rjust(10,"*")+'","pass":"'+Pass_Hashed.rjust(120,"*")+'","integrity":"'+F_hashed.rjust(64,"*")+'","os":"'+platform.system().rjust(8,"*")+'","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
                 Metadatax=Fernet(KeyGeneratedBase64).encrypt(dpj_dict)        
                 FTarget=open(Filename,"rb+")
                 FTarget.seek(posbyte)
@@ -434,7 +434,7 @@ def main():
                     fragdata=Filehandle(Filename,BytesPosition,BytesTarget)                     
                     intro()    
                     lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
-                    lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}")      
+                    lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
                     lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                     lprint(f"\n| Target: 📝{path.basename(Filename)}")
                     lprint(f"\n| Size: {bitscv}") 
@@ -508,11 +508,10 @@ def main():
                 notsucessed+=[{"Filename":path.basename( Filename),"error" : "Invalid passphrase!"}]
                 intro()    
                 lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
-                lprint(f"\n| Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}")
-                lprint(f"\n| Integrity: ✅ {N_integrity}  ⛔ {X_integrity}\n")
-                lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f"Scanned {scf}/{lentarg}"))
+                lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
+                lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                 lprint(f"\n| Target: 📝{path.basename(Filename)}")
-                lprint(f"\n| Size: {byteme(str(AFsize))}") 
+                lprint(f"\n| Size: {bitscv}")
                 
         intro()
         if len(sucessed)>0 and len(notsucessed)==0:titledone="|DONE DECRYPTING...😃" 
@@ -542,7 +541,7 @@ def main():
                         print(f"--File: {r['Filename']}  --Reason:{r['error']}")  
                     
         print(f"\n❌ {len(notsucessed)} Files Failed to decrypt...\n" if notsucessed else "")
-        print(f"✔️ {len(sucessed)} Files Decrypted with %{int(100*(N_integrity/lensuc))} Data verified!\n"  if sucessed else "")    
+        print(f"✔️ {len(sucessed)} Files Decrypted"  if sucessed else "")    
         
         exit("Done!")
          

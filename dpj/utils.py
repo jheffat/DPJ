@@ -136,7 +136,7 @@ def intro():
     ____   ____      _ 
    |  _ \ |  _ \    | |     🌍: https://icodexys.net
    | | | || |_) |_  | |     🔨: https://github.com/jheffat/-DPJ
-   | |_| ||  __/| |_| |     📊: 3.0.1  (04/22/2025)
+   | |_| ||  __/| |_| |     📊: 3.0.6  (04/22/2025)
    |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.\n""" )                                                     
 def warning():
