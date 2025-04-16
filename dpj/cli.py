@@ -300,7 +300,7 @@ def main():
                 lprint(f"\n| Size: {bitscv}  | Type: [{Type_file}]")  
                 lprint("\n■Hashing Data...")
                 if "GB" in bitscv:lprint("It may take a while....") 
-                F_hashed=sha256(Filehandle(Filename,posbyte,int(Fsize*fragbyte))).hexdigest()
+                F_hashed=hashlib.sha256(Filehandle(Filename,posbyte,int(Fsize*fragbyte))).hexdigest()
                 lprint("✅")
                 
                 lprint("\n■Encrypting...")
@@ -443,7 +443,7 @@ def main():
                     decryptdata=dpj(fragdata,Pass_KDF)  
                     lprint("✅" )  
                     lprint("\n■Checking Data's Integrity...")
-                    integrity=sha256(decryptdata).hexdigest()== F_hashed
+                    integrity=hashlib.sha256(decryptdata).hexdigest()== F_hashed
                     if integrity==True:
                         lprint("✅")
                     else:
