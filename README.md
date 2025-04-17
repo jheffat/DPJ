@@ -3,9 +3,11 @@
 ![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/intro.png)
 ![PyPI](https://img.shields.io/pypi/v/dpj)
 ![License](https://img.shields.io/github/license/jheffat/DPJ)
+![Repo Size](https://img.shields.io/github/repo-size/jheffat/DPJ)
+
 
 **DPJ** is a command-line data encryption tool, a complete rebuild and upgrade from the legacy **Fixor** project (v2.50 / v1.0). Name changed to DPJ 
- in honor of the original name from encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
+ in honor of the original name from encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom method, build with python. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
 
 ## ⚡ Features
 
@@ -18,6 +20,7 @@
 - ✅ **File Integrity Verification**, a built-in verification step checks whether the decrypted data matches the original, ensuring the decryption process was successful.
 - 🛡️ **Tamper Protection**: Files won’t be modified unless the passphrase is correct
 - #️⃣ **Hash tools included**: Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
+
 ## 🚀 Performance
 
 DPJ improves on Fixor with significantly faster encryption and decryption processes, optimized for modern systems and large files.
