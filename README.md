@@ -1,15 +1,11 @@
 ![License](https://img.shields.io/github/license/jheffat/DPJ)
 ![Repo Size](https://img.shields.io/github/repo-size/jheffat/DPJ)
-![Build](https://github.com/jheffat/DPJ/actions/workflows/python-app.yml/badge.svg)
+![PyPI](https://img.shields.io/pypi/v/dpj)
 
 
 # 🔐 DPJ - CLI Data Cryptographic Tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Old version)
 
 ![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/intro.png)
-![PyPI](https://img.shields.io/pypi/v/dpj)
-![License](https://img.shields.io/github/license/jheffat/DPJ)
-![Repo Size](https://img.shields.io/github/repo-size/jheffat/DPJ)
-
 
 **DPJ** is a command-line data encryption tool, a complete rebuild and upgrade from the legacy **Fixor** project (v2.50 / v1.0). Name changed to DPJ 
  in honor of the original name from encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom method, build with python. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
