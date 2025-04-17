@@ -1,3 +1,8 @@
+![License](https://img.shields.io/github/license/jheffat/DPJ)
+![Repo Size](https://img.shields.io/github/repo-size/jheffat/DPJ)
+![Build](https://github.com/jheffat/DPJ/actions/workflows/python-app.yml/badge.svg)
+
+
 # 🔐 DPJ - CLI Data Cryptographic Tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Old version)
 
 ![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/intro.png)
