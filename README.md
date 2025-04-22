@@ -42,7 +42,7 @@ python3 -m pip install
 pip install dpj
 ```
   ++Download and install executable :
-```bash
+```url
 [DPJ 3.0.7 Installer.exe](https://github.com/jheffat/DPJ/blob/main/Bins/DPJ%203.0.7%20Installer.exe) 
 ```
 
