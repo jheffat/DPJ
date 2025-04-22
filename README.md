@@ -43,8 +43,8 @@ pip install dpj
 ```
   ++Download and install executable :
 
-['DPJ 3.0.7 Installer.exe'](https://github.com/jheffat/DPJ/blob/main/Bins/DPJ%203.0.7%20Installer.exe) 
-
+[DPJ 3.0.7 Installer.exe](https://github.com/jheffat/DPJ/blob/main/Bins/DPJ%203.0.7%20Installer.exe) 
+x64win
 
 
 ## 🧪 Usage Examples
