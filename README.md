@@ -41,10 +41,9 @@ python3 -m pip install
 ```bash
 pip install dpj
 ```
-  ++Download and install executable :
-```url
+  ++Download and install executable for windows :
+
 [DPJ 3.0.7 Installer.exe](https://github.com/jheffat/DPJ/blob/main/Bins/DPJ%203.0.7%20Installer.exe) 
-```
 
 ## 🧪 Usage Examples
 Encrypt all files including sub-directories with a key `#R3ds0ftwar3!len3zz`
