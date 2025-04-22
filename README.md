@@ -63,10 +63,15 @@ scan all files including in sub-directories on the current local
 ```bash
 dpj -s *.* -r  
 ```
-Hash all files using all algorithm 
+Hash all files using all algorithms
 ```bash
 dpj -hs *.* -a all
 ```
+Hash a text using md5
+```bash
+dpj -hs 'Life is Good' -a md5
+```
+
 ## 📷 Screenshots
 `List of Files ready to be encrypted`
 ![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/List%20to%20encrypt.png)
