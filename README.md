@@ -45,6 +45,7 @@ pip install dpj
 
 [DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
 
+
 ## 🧪 Usage Examples
 Encrypt all files including sub-directories with a key `#R3ds0ftwar3!len3zz`
 ```bash
