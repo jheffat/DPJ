@@ -10,6 +10,7 @@ def main():
             print("--Permission denied--x_x")
             sleep(4)
             exit()
+#---------------> building the arguments for parameters    
     parser = argparse.ArgumentParser(description="A simple CLI tool to encrypt/decrypt/hash files")
         
     group = parser.add_mutually_exclusive_group(required=True)
@@ -23,7 +24,6 @@ def main():
     g2.add_argument("-k", "--key", type=str,metavar="KEY", help="Specify a Passphrase to encrypt/decrypt [OPTIONAL]")
     g2.add_argument("-a", "--algo", type=str,default="sha256", help="Choose an algorithm to hash (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5) or all, Default=sha256")
 
-
     try:    
         args = parser.parse_args()
     except SystemExit as e:
@@ -31,7 +31,7 @@ def main():
         parser.print_help()
         helpscr()
         exit()
-            
+  #---------------> if  encryption/decryption/scan enabled  then get ready/collect files selected  and skip hashing function       
     for argx, valuex in vars(args).items():
         if argx=='encrypt'or argx=='decrypt'or argx=='scan':
             if valuex!=None:
@@ -42,6 +42,7 @@ def main():
                 else:
                     targets=glob.glob(valuex)
                     break
+  #-------------->here is where it start to hash files or text if -hs --hash enabled      
         if argx=="hash" and valuex!=None:   
             if args.algo in ['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']:
                     hashfunction=getattr(hashlib, args.algo.lower())()  
@@ -173,7 +174,7 @@ def main():
                             print(f"🧬[{digest}]")    
                 print("═"*90+"\n")        
                 exit("Done...")                 
-            
+    #-------------------> here starts  the execution to scan (-s --scan), encrypt(-e --encrypt) and decrypt(-d ----decrypt)        
     if len(targets)==0:
         intro()
         parser.print_help()
@@ -494,7 +495,7 @@ def main():
                                 elif sucessed[ln]["integrity"]=='False':ic="⛔"
                                 print(f"{ln})--{ic}File:{sucessed[ln]['Filename']}" )
                             
-                        print(f"✔️ {len(sucessed)} Files Decrypted with %{int(100*(N_integrity/lensuc))} Data verified!\n")
+                        print(f"✔️ {len(sucessed)} Files Decrypted\n")
                         print("🚫",lentarg-len(sucessed),"Files Not Decrypted ")     
                     if len(notsucessed)>0:
                             print("\n***Failed List\n")

@@ -135,8 +135,8 @@ def intro():
     print("""  
     ____   ____      _ 
    |  _ \ |  _ \    | |     🌍: https://icodexys.net
-   | | | || |_) |_  | |     🔨: https://github.com/jheffat/-DPJ
-   | |_| ||  __/| |_| |     📊: 3.0.6  (04/22/2025)
+   | | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
+   | |_| ||  __/| |_| |     📊: 3.0.7  (04/22/2025)
    |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.\n""" )                                                     
 def warning():
