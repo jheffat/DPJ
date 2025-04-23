@@ -43,14 +43,14 @@ pip install dpj
 ```
   ++By download and install executable for:
 
-   `*Windows`
-       [DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
+`*Windows`
+[DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
 
-   `*Linux Debian`
-       [DPJ_307LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
+`*Linux Debian`
+[DPJ_307LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.deb) 
 
    ```bash
-   sudo pkdb -i DPJ_307LinuxDeb.deb
+   sudo dpkg -i DPJ_307LinuxDeb.deb
    ```
 
 
@@ -101,7 +101,6 @@ dpj -hs 'Life is Good' -a md5
 
 - KDF: Passphrases are transformed via a Key Derivation Function before use, making brute-force attempts extremely difficult.
 - bcrypt: Passphrase hashes are stored using bcrypt to safely verify future attempts without revealing the key.
-- AES Encryption: The metadata (containing the bcrypt hash) are encrypted with AES, the file content use different cryptographic method.
 - No Overwrites: Files will not be altered if the provided passphrase is incorrect.
 - Hash Verification: A post-decryption hash ensures that the data was correctly restored.
 
