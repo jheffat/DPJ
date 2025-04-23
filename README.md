@@ -47,7 +47,12 @@ pip install dpj
 [DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
 
 `*Linux Debian`
-[DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
+[DPJ 3.0.7 LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
+
+```bash
+pip install dpj
+```
+
 
 
 ## 🧪 Usage Examples
