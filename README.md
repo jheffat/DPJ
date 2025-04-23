@@ -16,7 +16,7 @@
 - 🧠 **Choose or Autogenerate Passphrase** for encryption
 - 🔐 **KDF-powered Key Derivation** to resist brute-force attacks
 - 🧂 **Secure Password Hashing with bcrypt** (stored in encrypted metadata)
-- 🧬 **Encrypted Metadata** using AES to protect internal config
+- 🧬 **Encrypted Metadata** Used to protect internal config
 - 🔍 **File Scan Mode** to check encryption details
 - ✅ **File Integrity Verification**, a built-in verification step checks whether the decrypted data matches the original, ensuring the decryption process was successful.
 - 🛡️ **Tamper Protection**: Files won’t be modified unless the passphrase is correct
@@ -37,12 +37,16 @@ git clone https://github.com/jheffat/dpj.git
 cd dpj
 python3 -m pip install
 ``` 
-  ++install DPJ by pypi:
+  ++by using pypi:
 ```bash
 pip install dpj
 ```
-  ++Download and install executable for windows :
+  ++By download and install executable for:
 
+`*Windows`
+[DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
+
+`*Linux Debian`
 [DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
 
 
