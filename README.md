@@ -44,7 +44,7 @@ pip install dpj
   ++By download and install executable for:
 
 `*Windows`
-[DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe) 
+[DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe)  (Disable antivirus)
 
 `*Linux Debian`
 [DPJ_307LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.deb) 
