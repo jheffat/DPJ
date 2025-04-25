@@ -37,12 +37,10 @@ git clone https://github.com/jheffat/dpj.git
 cd dpj
 python3 -m pip install
 ``` 
-  ++by using pypi:
+  ++by using pypi [pypi.org/project/dpj...](https://pypi.org/project/dpj/) or:
 ```bash
 pip install dpj
 ```
-Or [pypi.org/project/dpj...](https://pypi.org/project/dpj/)
-
   ++By download and install executable for:
 
 `*Windows`
