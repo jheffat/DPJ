@@ -41,6 +41,8 @@ python3 -m pip install
 ```bash
 pip install dpj
 ```
+Or [pypi.org/project/dpj...](https://pypi.org/project/dpj/)
+
   ++By download and install executable for:
 
 `*Windows`
