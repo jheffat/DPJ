@@ -1,9 +1,7 @@
 #  -*- coding: utf-8 -*-
 from .utils import *
 def main():
-    Password="";n=0;targets=[];op="";banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();statuspass="";state=False ;
-    esc=0 ;posbyte=0                       
-    rootprocess="";k=""
+    Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
 
     if platform.system()!="Windows":
         if getuid()>0:
@@ -42,7 +40,7 @@ def main():
                 else:
                     targets=glob.glob(valuex)
                     break
-  #-------------->here is where it start to hash files or text if -hs --hash enabled      
+  #-------------->here is where it start to hash files or text if -hs or --hash enabled      
         if argx=="hash" and valuex!=None:   
             if args.algo in ['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']:
                     hashfunction=getattr(hashlib, args.algo.lower())()  
@@ -57,24 +55,20 @@ def main():
                 print("\n║HASHING A FILE╠"+"═"*60+"╣")    
                 try:               
                     data=Filehandle(targets,0,-1) 
+                    start_time = time.time() 
                     if args.algo!='all':                        
-                        hashfunction.update(data) 
-                        now=datetime.now()  
-                        timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}"
+                        hashfunction.update(data)          
                         if args.algo.startswith("shake_"):
                             length=32
                             digest = hashfunction.hexdigest(length*2)  
                         else:
                             length=hashfunction.digest_size
                             digest = hashfunction.hexdigest() 
-                        print(f"⌛Timestamp: {timestamp} ")
+                        
                         print(f"📄Filename: {targets}")
-                        print(f"🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
-                        print(f"🧬[{digest}]")
-                    elif args.algo=='all':
-                        now=datetime.now()  
-                        timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
-                        print(f"⌛Timestamp: {timestamp} ")
+                        print(f"\n🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                        print(f"🧬[{digest}]\n")
+                    elif args.algo=='all': 
                         print(f"📄Filename: {targets}")
                         for ha in sorted(['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']):
                             hashfunction=getattr(hashlib, ha)()      
@@ -85,11 +79,13 @@ def main():
                             else:
                                 length=hashfunction.digest_size
                                 digest = hashfunction.hexdigest() 
-                            print(f"🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
-                            print(f"🧬[{digest}]")    
+                            print(f"\n🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                            print(f"🧬[{digest}]\n")    
                     print("═"*90+"\n")            
                 except Exception as e:
-                            print(f"🚫 Error - {e}")
+                            print(f"🚫 Error - {e}")       
+                end_time = time.time() - start_time
+                print(f"⌛Times Elapsed: {end_time:.4f} seconds" if start_time else "")
                 exit("Done...")          
             elif len(glob.glob(valuex))>1:
                 print("Collecting...")
@@ -98,28 +94,23 @@ def main():
                 else:
                     targets=glob.glob(valuex)   
                 print("\n║HASHING FILES╠"+"═"*60+"╣")
+                start_time=time.time() 
                 for f in targets: 
                         try:               
-                            data=Filehandle(f,0,-1) 
+                            data=Filehandle(f,0,-1)
                             if args.algo!='all':                            
                                 hashfunction.update(data) 
-                                now=datetime.now()  
-                                timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
                                 if args.algo.startswith("shake_"):
                                     length=32
                                     digest = hashfunction.hexdigest(length*2)  
                                 else:
                                     length=hashfunction.digest_size
-                                    digest = hashfunction.hexdigest() 
-                                print(f"⌛Timestamp: {timestamp} ")
+                                    digest = hashfunction.hexdigest()                          
                                 print(f"📄Filename: {f}")
-                                print(f"🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
-                                print(f"🧬[{digest}]")
+                                print(f"\n🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                                print(f"🧬[{digest}]\n")
                                 print("═"*90)
-                            elif args.algo=='all':
-                                now=datetime.now()  
-                                timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
-                                print(f"⌛Timestamp: {timestamp} ")
+                            elif args.algo=='all':                              
                                 print(f"📄Filename: {f}")
                                 for ha in sorted(['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']):
                                     hashfunction=getattr(hashlib, ha)()      
@@ -130,36 +121,33 @@ def main():
                                     else:
                                         length=hashfunction.digest_size
                                         digest = hashfunction.hexdigest()                                
-                                    print(f"🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
-                                    print(f"🧬[{digest}]")  
+                                    print(f"\n🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                                    print(f"🧬[{digest}]\n")  
                                 print("═"*90)
                         except Exception as e:
                             notsucessed+=[f"🚫 Error - {e}"]
                 if notsucessed:
                     for errr in notsucessed:
                         print(errr)
+                end_time = time.time() - start_time
+                print(f"⌛Times Elapsed: {end_time:.4f} seconds" if start_time else "")
                 exit("Done...")                                                      
             else:
                 targets=valuex 
                 print("\n║HASHING TEXT STRING╠"+"═"*60+"╣")
+                start_time=time.time()
                 if args.algo!='all':
                     hashfunction.update(targets.encode('utf-8')) 
-                    now=datetime.now()  
-                    timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
                     if args.algo.startswith("shake_"):
                         length=32
                         digest = hashfunction.hexdigest(length*2)  
                     else:
                         length=hashfunction.digest_size
                         digest = hashfunction.hexdigest() 
-                    print(f"⌛Timestamp: {timestamp} ")
                     print(f"📝Text: {targets}")   
-                    print(f"🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
-                    print(f"🧬[{digest}]")
+                    print(f"\n🔐{args.algo.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                    print(f"🧬[{digest}]\n")
                 elif args.algo=='all':
-                        now=datetime.now()  
-                        timestamp=f"{now.date()}  {now.strftime("%I:%M %p")}" 
-                        print(f"⌛Timestamp: {timestamp} ")
                         print(f"📝Text: {targets}")
                         for ha in sorted(['blake2b', 'sha3_512', 'sha256', 'sha1',  'sha512', 'shake_128', 'shake_256',  'sha3_256', 'blake2s', 'md5']):
                             hashfunction=getattr(hashlib, ha)()      
@@ -170,11 +158,13 @@ def main():
                             else:
                                 length=hashfunction.digest_size
                                 digest = hashfunction.hexdigest() 
-                            print(f"🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
-                            print(f"🧬[{digest}]")    
+                            print(f"\n🔐{ha.upper()} 🧮Length: {length} Bytes, {length*8} Bits")
+                            print(f"🧬[{digest}]\n")    
                 print("═"*90+"\n")        
+                end_time = time.time() - start_time
+                print(f"⌛Times Elapsed: {end_time:.4f} seconds" if start_time else "")
                 exit("Done...")                 
-    #-------------------> here starts  the execution to scan (-s --scan), encrypt(-e --encrypt) and decrypt(-d ----decrypt)        
+    #-------------------> here starts  the execution to scan (-s --scan), encrypt(-e --encrypt) or decrypt(-d ----decrypt)        
     if len(targets)==0:
         intro()
         parser.print_help()
@@ -265,12 +255,11 @@ def main():
 
         lp=len(Password)
         Salt=bcrypt.gensalt()
-        Pass_KDF=KDF(Password.encode() ,Salt,32,100)
+        Pass_KDF=KDF(Password.encode() ,Salt,32,15)
         Pass_Hashed=passhash(Pass_KDF,Salt).hex()
         lentarg=len(targets) 
         warning() 
         lprint("\n| Starting...")
-        rootprocess=path.dirname(targets[0])
         for scf,Filename in enumerate(targets):  
             try:
                 Fsize=filesize(Filename);bitscv=byteme(str(Fsize))
@@ -299,18 +288,16 @@ def main():
                 lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),' % '+f"{((scf/lentarg)*100):.1f}"))
                 lprint(f"\n| Target: 📝{path.basename(Filename)}")
                 lprint(f"\n| Size: {bitscv}  | Type: [{Type_file}]")  
-                lprint("\n■Hashing Data...")
-                if "GB" in bitscv:lprint("It may take a while....") 
+                lprint("\n■Hashing Data...")  
                 F_hashed=hashlib.sha256(Filehandle(Filename,posbyte,int(Fsize*fragbyte))).hexdigest()
-                lprint("✅")
-                
+                lprint("✅") 
                 lprint("\n■Encrypting...")
+                if "GB" in bitscv:lprint("It may take a while....")
                 encryptdata=dpj(fragdata,Pass_KDF)  
-                lprint("✅")
-                
+                lprint("✅")   
                 stdout.write("\n■Patching...")
                 dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+'","posbytes":"'+str(posbyte).rjust(15,"*")+'","tarbytes":"'+str(ldata).rjust(15,"*")+'","date":"'+str(datetime.now().date()).rjust(10,"*")+'","pass":"'+Pass_Hashed.rjust(120,"*")+'","integrity":"'+F_hashed.rjust(64,"*")+'","os":"'+platform.system().rjust(8,"*")+'","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
-                Metadatax=Fernet(KeyGeneratedBase64).encrypt(dpj_dict)        
+                Metadatax=dpj(dpj_dict,Metakey)        
                 FTarget=open(Filename,"rb+")
                 FTarget.seek(posbyte)
                 FTarget.write(encryptdata)
@@ -414,20 +401,18 @@ def main():
             keypress('enter')  
             
         lp=len(Password)
-        lentarg=len(targets)
-        rootprocess=path.dirname(targets[0])
+        lentarg=len(targets)     
         for scf,Filename in enumerate(targets):
             lprint(f"\n■Reading Next File #{scf}: {path.basename(Filename.upper())}...")
             headinfo=isencrypted(Filename) 
             passhashed=bytes.fromhex(headinfo["pass"])
             Salted=passhashed[:29]
-            Pass_KDF=KDF(Password.encode(),Salted,32,100)
+            Pass_KDF=KDF(Password.encode(),Salted,32,15)
             AFsize=filesize(Filename) 
             bitscv=byteme(str(AFsize))
             if checkpass(Pass_KDF,passhashed):
                 lprint("✅")
-                try:       
-                    
+                try:                
                     Fsize=int(headinfo["size"].replace("*",""))
                     BytesTarget=int(headinfo["tarbytes"].replace("*","")) 
                     BytesPosition=int(headinfo["posbytes"].replace("*",""))
