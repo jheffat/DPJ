@@ -1,6 +1,6 @@
 ![License](https://img.shields.io/github/license/jheffat/DPJ)
 ![Repo Size](https://img.shields.io/github/repo-size/jheffat/DPJ)
-![PyPI](https://img.shields.io/pypi/v/dpj)
+![Version](https://img.shields.io/pypi/v/dpj)
 
 
 # 🔐 DPJ - CLI Data Cryptographic Tool
