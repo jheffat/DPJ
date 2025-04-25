@@ -1,14 +1,12 @@
 #  -*- coding: utf-8 -*-
+
 from shutil import copy2
 from string import ascii_letters,digits
 from os import system,path #,getuid #<---Only for Linux/MacOSX
-    
-from cryptography.fernet import Fernet,InvalidToken
-import glob, platform,re,keyboard, bcrypt,base64,argparse,hashlib
+import glob, platform,re,keyboard, bcrypt,argparse,hashlib,time
 from json import loads
 from secrets import choice
-from sys import exit, argv,stdout
-from time import sleep
+from sys import exit,stdout
 from datetime import datetime
 def KDF(Pass,Salt,bk,r):
     return  bcrypt.kdf(Pass,salt=Salt,desired_key_bytes=bk,rounds=r)
@@ -95,34 +93,19 @@ def Filehandle(Filename,p,b):
     fd=rf.read(b)
     rf.close
     return fd
-def isx(data, key):
-    try:
-        decoded_data = base64.urlsafe_b64decode(data)
-        if len(decoded_data) < 49:
-            return False
-        f = Fernet(key)
-        try:
-            f.decrypt(data)
-            return True  
-        except InvalidToken:
-            return False  
-    except Exception:
-        return False  
-def isencrypted (fname):
-    key=KeyGeneratedBase64
-    Fs=filesize(fname)
-    r=open(fname,"rb");metadata=""
-    r.seek(Fs-612)
-    fragdt=r.read()
 
-    if isx(fragdt,key)==True:
-        try:
-            
-            metadata=Fernet(key).decrypt(fragdt).decode()
-            if '"#DPJ":"!CDXY"' in metadata: 
-                return loads(metadata)
-        except:
-            return ""
+def isencrypted (fname):
+    key=Metakey   
+    try:
+        Fs=filesize(fname)
+        r=open(fname,"rb");metadata=""
+        r.seek(Fs-399)
+        fragdt=r.read()      
+        metadata="".join(list(map(chr, dpj(fragdt,key))))
+        if '"#DPJ":"!CDXY"' in metadata: 
+            return loads(metadata)
+    except:
+        return ""
     return ""
         
 def intro():
@@ -132,13 +115,14 @@ def intro():
         _ = system("cls")
     else:
         _ = system("clear")
-    print("""  
-    ____   ____      _ 
-   |  _ \ |  _ \    | |     🌍: https://icodexys.net
-   | | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
-   | |_| ||  __/| |_| |     📊: 3.0.7  (04/22/2025)
-   |____/ |_|    \___/ 
-**DATA PROTECTION JHEFF**, a Cryptographic Software.\n""" )                                                     
+      
+    print(r"""
+ ____   ____      _ 
+|  _ \ |  _  \   | |     🌍: https://icodexys.net
+| | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
+| |_| ||  __/| |_| |     📊: 3.0.7  (04/22/2025)
+|____/ |_|    \___/ 
+**DATA PROTECTION JHEFF**, a Cryptographic Software.""" )                                                     
 def warning():
     if platform.system()=='Linux':
         _ = system('clear')
@@ -173,12 +157,13 @@ def warning():
 def helpscr(): 
     print("""EXAMPLE: 
           dpj -e mydiary.txt        -->Encrypt a specified file mydiary.txt
-          dpj -e *.exe              -->Encrypt all files with the extension .EXE on a specified location
+          dpj -hs 'Life is Good'    -->Hash a text using SHA256 as Default.
           dpj -d *.* -r             -->Decrypt all files including files in subdirectories
           dpj -e *.* -k m3@rl0n1    -->Encrypt all files with a specified KEY
           dpj -s *.* -r             -->Scan all encrypted files including files in subdirectories
           dpj -sh *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
           """)
-global KeyGeneratedBase64
-KeyGeneratedBase64=base64.b64encode(KDF(b"#IC)D#X!Sd@t@pJ3ff",b"s87r444r4e4w4#s@^43",32,100)).decode()
+global Metakey, Original_Password
+Metakey=KDF(b"#IC)D#X!Sd@t@pJ3ff3rs0n",b"s87r444r4e4w4#s@^43",32,100)
 #Developed by Jheff Mat(iCODEXYS) since 02-11-2021
+
