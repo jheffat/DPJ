@@ -28,7 +28,7 @@ DPJ improves on Fixor with significantly faster encryption and decryption proces
 
 ## 🔧 Installation
 
-You can install DPJ 
+You can install DPJ, 
   
   ++by cloning this repo:
 
@@ -44,10 +44,10 @@ pip install dpj
   ++By download and install executable for:
 
 `*Windows`
-[DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe)  (Disable antivirus)
+[DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe)  (Need to setup your anti-virus to allow using this app)
 
 `*Linux Debian`
-[DPJ_307LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.deb) 
+[DPJ_307LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.deb) (Link Dead**Fixing...)
 
    ```bash
    sudo dpkg -i DPJ_307LinuxDeb.deb
