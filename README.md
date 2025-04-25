@@ -8,19 +8,19 @@
 ![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/intro.png)
 
 **DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ 
- in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom method, build with python. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
+ in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom method, built with python. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
 
 ## ⚡ Features
 
-- 🔒 **Encrypt & Decrypt Files** using strong cryptography
-- 🧠 **Choose or Autogenerate Passphrase** for encryption
-- 🔐 **KDF-powered Key Derivation** to resist brute-force attacks
-- 🧂 **Secure Password Hashing with bcrypt** (stored in encrypted metadata)
-- 🧬 **Encrypted Metadata** Used to protect internal config
-- 🔍 **File Scan Mode** to check encryption details
+- 🔒 **Encrypt & Decrypt Files**, using strong cryptography
+- 🧠 **Choose or Autogenerate Passphrase**, for encryption
+- 🔐 **KDF-powered Key Derivation**, to resist brute-force attacks
+- 🧂 **Secure Password Hashing with bcrypt**, stored in encrypted metadata
+- 🧬 **Encrypted Metadata**, Used to protect internal config
+- 🔍 **File Scan Mode**, to check encryption details
 - ✅ **File Integrity Verification**, a built-in verification step checks whether the decrypted data matches the original, ensuring the decryption process was successful.
-- 🛡️ **Tamper Protection**: Files won’t be modified unless the passphrase is correct
-- #️⃣ **Hash tools included**: Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
+- 🛡️ **Tamper Protection**, Files won’t be modified unless the passphrase is correct
+- #️⃣ **Hash tools included**, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
 
 ## 🚀 Performance
 
@@ -37,7 +37,7 @@ git clone https://github.com/jheffat/dpj.git
 cd dpj
 python3 -m pip install
 ``` 
-  ++by using pypi [pypi.org/project/dpj...](https://pypi.org/project/dpj/) or:
+  ++by using pypi [pypi.org/dpj...](https://pypi.org/project/dpj/) or:
 ```bash
 pip install dpj
 ```
