@@ -106,6 +106,19 @@ dpj -hs 'Life is Good' -a md5
 
 ## 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
+## ⚠️ Disclaimer
+**DPJ is a secure encryption tool intended for responsible use.**
+By using this software, you acknowledge and accept the following:
+
+-You are solely responsible for managing your passwords, keys, and encrypted data.
+
+-If you lose or forget your passphrase, there is no way to recover your data.
+This is by design, as DPJ does not store or transmit any recovery information.
+
+-The author(s) of DPJ are not liable for any data loss, damage, or consequences resulting from misuse, forgotten credentials, or failure to follow best security practices.
+
+**Use at your own risk.**
+
 
 ## 🙌 Acknowledgements
 DPJ(Data protection Jeff), was my first encryption app crafted in QBasic(CLI) and Visual Basic(GUI) between 2003–2007. This project is a modern revival with more power, speed, and security, thanks to the powerful language PYTHON. 
