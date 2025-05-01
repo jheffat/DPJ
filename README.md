@@ -15,7 +15,8 @@
 - 🔒 **Encrypt & Decrypt Files**, using strong cryptography
 - ⚡ **IV Support**,  Uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
 - 🧠 **Choose or Autogenerate Passphrase**, for encryption
-- 🔐 **KDF-powered Key Derivation**, to resist brute-force attacks
+- 🚫 **No Overwrites**, a file will not be altered if the provided passphrase is incorrect. DPJ detects if a file is encrypted and prevents redundant encryption
+- 🔐 **KDF Support**, Passphrases are transformed via a `Key Derivation Function` before use, making brute-force attempts extremely difficult.
 - 🧂 **Secure Password Hashing with bcrypt**, stored in encrypted metadata
 - 🧬 **Encrypted Metadata with AES**, Used to protect internal config
 - 🔍 **File Scan Mode**, to check encryption details
@@ -26,6 +27,19 @@
 ## 🚀 Performance
 
 DPJ improves on Fixor with significantly faster encryption and decryption processes, optimized for modern systems and large files.
+
+## ⚠️ Disclaimer
+**DPJ is a secure encryption tool intended for responsible use.**
+By using this software, you acknowledge and accept the following:
+
+-You are solely responsible for managing your passwords, keys, and encrypted data.
+
+-If you lose or forget your passphrase, there is no way to recover your data.
+This is by design, as DPJ does not store or transmit any recovery information.
+
+-The author(s) of DPJ are not liable for any data loss, damage, or consequences resulting from misuse, forgotten credentials, or failure to follow best security practices.
+
+**Use at your own risk.**
 
 ## 🔧 Installation
 
@@ -98,29 +112,9 @@ dpj -hs 'Life is Good' -a md5
 `Hashing all files using only the algorithm SHA256`
 ![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/hashing%20all%20files.png)
 
-## 🔐 Security Details
-
-- KDF: Passphrases are transformed via a Key Derivation Function before use, making brute-force attempts extremely difficult.
-- bcrypt: Passphrase hashes are stored using bcrypt to safely verify future attempts without revealing the key.
-- No Overwrites: Files will not be altered if the provided passphrase is incorrect.
-- Hash Verification: A post-decryption hash ensures that the data was correctly restored.
-- IV (Initialization Vector) support
-- HMAC (Hash-based Message Authentication Code)
 
 ## 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
-## ⚠️ Disclaimer
-**DPJ is a secure encryption tool intended for responsible use.**
-By using this software, you acknowledge and accept the following:
-
--You are solely responsible for managing your passwords, keys, and encrypted data.
-
--If you lose or forget your passphrase, there is no way to recover your data.
-This is by design, as DPJ does not store or transmit any recovery information.
-
--The author(s) of DPJ are not liable for any data loss, damage, or consequences resulting from misuse, forgotten credentials, or failure to follow best security practices.
-
-**Use at your own risk.**
 
 
 ## 🙌 Acknowledgements
