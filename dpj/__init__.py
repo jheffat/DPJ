@@ -2,10 +2,10 @@
 DPJ - A CLI Encryption Application
 Author: Jheff MAT
 License: MIT
-Version: 3.0.7
+Version: 3.5.0
 """
 
-__version__ = "3.0.7"
+__version__ = "3.5.0"
 __author__ = "Jheff MAT"
 
 # Expose core functions for easy import
