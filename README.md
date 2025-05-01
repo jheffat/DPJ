@@ -2,7 +2,15 @@
 ![Repo Size](https://img.shields.io/github/repo-size/jheffat/DPJ)
 ![Build](https://img.shields.io/pypi/v/dpj)
 
+```bash
+ ____   ____      _ 
+|  _ \ |  _  \   | |     🌍: https://icodexys.net
+| | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
+| |_| ||  __/| |_| |     📊: 3.5.0  (04/30/2025)
+|____/ |_|    \___/ 
+**DATA PROTECTION JHEFF**, a Cryptographic Software.
 
+```
 # 🔐 DPJ - CLI Data Cryptographic Tool
 
 ![Alt text](https://raw.githubusercontent.com/jheffat/-DPJ/main/scrnsht/intro.png)
