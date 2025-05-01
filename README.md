@@ -9,7 +9,30 @@
 | |_| ||  __/| |_| |     📊: 3.5.0  (04/30/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.
+usage: dpj.py [-h] (-e  | -d  | -s  | -hs ) [-r] [-k KEY] [-a ALGO]
 
+A simple CLI tool to encrypt/decrypt/hash files
+
+options:
+  -h, --help            show this help message and exit
+  -e , --encrypt        Encrypt Files/Messages
+  -d , --decrypt        Decrypt Files/Messages Encrypted
+  -s , --scan           Scan for encrypted files
+  -hs , --hash          Hash a File or a String.
+
+Optional Arguments:
+  These arguments are optional and provide additional features.
+
+  -r, --recursive       Enable recursive, allowing to process subdirectories [OPTIONAL]
+  -k KEY, --key KEY     Specify a Passphrase to encrypt/decrypt [OPTIONAL]
+  -a ALGO, --algo ALGO  Choose an algorithm to hash (blake2b, sha3_512, sha256, sha1, sha512, shake_128, shake_256, sha3_256, blake2s, md5) or all, Default=sha256
+EXAMPLE:
+          dpj -e mydiary.txt        -->Encrypt a specified file mydiary.txt
+          dpj -hs 'Life is Good'    -->Hash a text using SHA256 as Default.
+          dpj -d *.* -r             -->Decrypt all files including files in subdirectories
+          dpj -e *.* -k m3@rl0n1    -->Encrypt all files with a specified KEY
+          dpj -s *.* -r             -->Scan all encrypted files including files in subdirectories
+          dpj -sh *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
 ```
 
 
