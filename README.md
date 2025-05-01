@@ -10,16 +10,16 @@
 **DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ 
  in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom method, built with python. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
 
-##🧾 Features
+## 🧾 Features
 
 - 🔒 **Encrypt & Decrypt Files**, using strong cryptography
-- ⚡ **IV Support**,  Each encryption now uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
+- ⚡ **IV Support**,  Uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
 - 🧠 **Choose or Autogenerate Passphrase**, for encryption
 - 🔐 **KDF-powered Key Derivation**, to resist brute-force attacks
 - 🧂 **Secure Password Hashing with bcrypt**, stored in encrypted metadata
 - 🧬 **Encrypted Metadata with AES**, Used to protect internal config
 - 🔍 **File Scan Mode**, to check encryption details
-- ✅ **File Integrity Verification**, A SHA-256-based verification step checks whether the decrypted data matches the original, ensuring the decryption process was successful.
+- ✅ **Integrity Check Passed**, A SHA-256-based verification step checks whether the decrypted data matches the original, ensuring the decryption process was successful.
 - 🛡️ **HMAC Support**, A SHA-256-based HMAC is generated during encryption and verified during decryption to detect tampering or corruption.
 - #️⃣ **Hash tools included**, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
 
@@ -104,6 +104,8 @@ dpj -hs 'Life is Good' -a md5
 - bcrypt: Passphrase hashes are stored using bcrypt to safely verify future attempts without revealing the key.
 - No Overwrites: Files will not be altered if the provided passphrase is incorrect.
 - Hash Verification: A post-decryption hash ensures that the data was correctly restored.
+- IV (Initialization Vector) support
+- HMAC (Hash-based Message Authentication Code)
 
 ## 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
