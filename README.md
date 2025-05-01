@@ -32,7 +32,7 @@ EXAMPLE:
           dpj -d *.* -r             -->Decrypt all files including files in subdirectories
           dpj -e *.* -k m3@rl0n1    -->Encrypt all files with a specified KEY
           dpj -s *.* -r             -->Scan all encrypted files including files in subdirectories
-          dpj -sh *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
+          dpj -hs *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
 ```
 
 
