@@ -2,7 +2,7 @@
 ![Repo Size](https://img.shields.io/github/repo-size/jheffat/DPJ)
 ![Build](https://img.shields.io/pypi/v/dpj)
 
-```powershell
+```text
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
@@ -11,6 +11,8 @@
 **DATA PROTECTION JHEFF**, a Cryptographic Software.
 
 ```
+
+
 # 🔐 DPJ - CLI Data Cryptographic Tool
 
 **DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ 
