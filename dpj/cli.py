@@ -1,12 +1,12 @@
 #  -*- coding: utf-8 -*-
 from .utils import *
-def main():
+def main():   
     Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
-
+    MetaKey=base64.b64encode(KDF(genpass(18,9,7).encode(),urandom(18),32,100))
     if platform.system()!="Windows":
         if getuid()>0:
             print("--Permission denied--x_x")
-            sleep(4)
+            time.sleep(4)
             exit()
 #---------------> building the arguments for parameters    
     parser = argparse.ArgumentParser(description="A simple CLI tool to encrypt/decrypt/hash files")
@@ -164,7 +164,7 @@ def main():
                 end_time = time.time() - start_time
                 print(f"⌛Times Elapsed: {end_time:.4f} seconds" if start_time else "")
                 exit("Done...")                 
-    #-------------------> here starts  the execution to scan (-s --scan), encrypt(-e --encrypt) or decrypt(-d ----decrypt)        
+    #-------------------> here starts  the execution to scan (-s --scan), encrypt(-e --encrypt) or decrypt(-d --decrypt)        
     if len(targets)==0:
         intro()
         parser.print_help()
@@ -238,9 +238,9 @@ def main():
                     """)
             if Password.lower()=="q":exit("***Process canceled...***")
             if Password.lower()=="a":
-                Password=genpass()
+                Password=genpass(18,5,4)
                 while ValidPass(Password)!=True:
-                    Password=genpass()
+                    Password=genpass(18,5,4)
                 print(f"-> Passphrase generated: {Password}")
                 print("Please write it down before the encryption start." )
                 print("Press [ENTER] to continue...")
@@ -254,14 +254,17 @@ def main():
         Original_Password=Password
 
         lp=len(Password)
-        Salt=bcrypt.gensalt()
-        Pass_KDF=KDF(Password.encode() ,Salt,32,15)
-        Pass_Hashed=passhash(Pass_KDF,Salt).hex()
+       
         lentarg=len(targets) 
         warning() 
         lprint("\n| Starting...")
         for scf,Filename in enumerate(targets):  
             try:
+                
+                Salt=bcrypt.gensalt()
+                iv=urandom(16)
+                Pass_KDF=KDF(Password.encode() ,Salt,32,100)
+                Pass_Hashed=passhash(Pass_KDF,Salt)
                 Fsize=filesize(Filename);bitscv=byteme(str(Fsize))
                         
                 fragbyte=isZipmp3rarother(Filename)
@@ -289,19 +292,21 @@ def main():
                 lprint(f"\n| Target: 📝{path.basename(Filename)}")
                 lprint(f"\n| Size: {bitscv}  | Type: [{Type_file}]")  
                 lprint("\n■Hashing Data...")  
-                F_hashed=hashlib.sha256(Filehandle(Filename,posbyte,int(Fsize*fragbyte))).hexdigest()
+                F_hashed=hashlib.sha256(Filehandle(Filename,posbyte,int(Fsize*fragbyte))).digest()
                 lprint("✅") 
                 lprint("\n■Encrypting...")
                 if "GB" in bitscv:lprint("It may take a while....")
-                encryptdata=dpj(fragdata,Pass_KDF)  
+                encryptdata=dpj_e(fragdata,Pass_KDF,iv)  
+                hmc= hmac.new(Pass_KDF, encryptdata, hashlib.sha256).digest()
                 lprint("✅")   
                 stdout.write("\n■Patching...")
-                dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+'","posbytes":"'+str(posbyte).rjust(15,"*")+'","tarbytes":"'+str(ldata).rjust(15,"*")+'","date":"'+str(datetime.now().date()).rjust(10,"*")+'","pass":"'+Pass_Hashed.rjust(120,"*")+'","integrity":"'+F_hashed.rjust(64,"*")+'","os":"'+platform.system().rjust(8,"*")+'","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
-                Metadatax=dpj(dpj_dict,Metakey)        
+                dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+'","posbytes":"'+str(posbyte).rjust(15,"*")+'","tarbytes":"'+str(ldata).rjust(15,"*")+'","date":"'+str(datetime.now().date()).rjust(10,"*")+'","iv":"'+str(iv.hex()).rjust(32,"*")+'","hmac":"'+str(hmc.hex()).rjust(64,"*")+'","pass":"'+str(Pass_Hashed.hex()).rjust(120,"*")+'","integrity":"'+str(F_hashed.hex()).rjust(64,"*")+'","os":"'+platform.system().rjust(12,"*")+'","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
+                Metadatax=Fernet(MetaKey).encrypt(dpj_dict)        
                 FTarget=open(Filename,"rb+")
                 FTarget.seek(posbyte)
                 FTarget.write(encryptdata)
                 FTarget.seek(Fsize) 
+                FTarget.write(MetaKey)
                 FTarget.write(Metadatax)
                 FTarget.close
                 fragdata="";encryptdata=bytearray()
@@ -404,91 +409,106 @@ def main():
         lentarg=len(targets)     
         for scf,Filename in enumerate(targets):
             lprint(f"\n■Reading Next File #{scf}: {path.basename(Filename.upper())}...")
+            AFsize=filesize(Filename)
             headinfo=isencrypted(Filename) 
             passhashed=bytes.fromhex(headinfo["pass"])
+            iv=bytes.fromhex(headinfo['iv'])
+            hmc=bytes.fromhex(headinfo['hmac'])
+            F_hashed=bytes.fromhex(headinfo["integrity"])
             Salted=passhashed[:29]
-            Pass_KDF=KDF(Password.encode(),Salted,32,15)
-            AFsize=filesize(Filename) 
-            bitscv=byteme(str(AFsize))
-            if checkpass(Pass_KDF,passhashed):
-                lprint("✅")
-                try:                
-                    Fsize=int(headinfo["size"].replace("*",""))
-                    BytesTarget=int(headinfo["tarbytes"].replace("*","")) 
-                    BytesPosition=int(headinfo["posbytes"].replace("*",""))
-                    F_hashed=headinfo["integrity"]  
-                    fragdata=Filehandle(Filename,BytesPosition,BytesTarget)                     
+            Pass_KDF=KDF(Password.encode(),Salted,32,100)
+            bitscv=byteme(str(AFsize)) 
+            Fsize=int(headinfo["size"].replace("*",""))
+            BytesTarget=int(headinfo["tarbytes"].replace("*","")) 
+            BytesPosition=int(headinfo["posbytes"].replace("*",""))      
+            fragdata=Filehandle(Filename,BytesPosition,BytesTarget)             
+            ispass=checkpass(Pass_KDF,passhashed) 
+            ishmac=hmac.new(Pass_KDF,fragdata,hashlib.sha256).digest()==hmc
+            if ispass:
+                if ishmac:
+                    lprint("✅")
+                    try:                
+                                            
+                        intro()    
+                        lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
+                        lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
+                        lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
+                        lprint(f"\n| Target: 📝{path.basename(Filename)}")
+                        lprint(f"\n| Size: {bitscv}") 
+                        lprint("\n■Decrypting...")  
+                        if "GB" in bitscv or "TB" in bitscv:lprint("It may take a while...")                 
+                        decryptdata=dpj_d(fragdata,Pass_KDF,iv)  
+                        lprint("✅" )  
+                        lprint("\n■Checking Data's Integrity...")
+                        integrity=hashlib.sha256(decryptdata).digest()== F_hashed
+                        if integrity==True:
+                            lprint("✅")
+                        else:
+                            lprint("⛔")
+                            print("\n☢️|CheckSum didn't match...")
+                            print("[I]gnore the warning, try to decrypt the file and keep an original copy.")
+                            print("[S]kip this file, do not decrypt it and continue to the next....")
+                            while k!='I' and k!= 'S':
+                                k=keyboard.read_key().upper()
+                            if k=="S":
+                                notsucessed+=[{"Filename": path.basename(Filename),"error" : "CheckSUM Didn't match"}]
+                                FTarget="";decryptdata=bytearray();fragdata=b""
+                                continue
+                            elif k=="I":
+                                print("Copying....Please wait")
+                                copy2(Filename,Filename+"_!DPJ_Copy")
+                        lprint("\n■Patching...")
+                        FTarget=open(Filename,"rb+")
+                        FTarget.seek(BytesPosition)
+                        FTarget.write(decryptdata)
+                        FTarget.seek(0)
+                        FTarget.truncate(Fsize)
+                        FTarget.close             
+                        fragdata=b"";decryptdata=bytearray()
+                        sucessed+=[{"Filename": path.basename(Filename),"integrity" : str(integrity)}]
+                        lensuc=len(sucessed)
+                        lprint("✅")
+                    except IOError as errz:
+                        lprint("⛔")
+                        notsucessed+=[{"Filename": path.basename(Filename),"error" : str(errz)}]
+                        FTarget="";decryptdata=bytearray();fragdata=b""
+                    except KeyboardInterrupt as kk:
+                        print("\n|DECRYPTION PROCESS CANCELED...🙄\n")            
+                        print("|Result:\n")     
+                        if lensuc>0:
+                            print("***Decrypted List\n")
+                            for ln in range(0,lensuc,3):            
+                                if ln+2<lensuc:
+                                    if sucessed[ln]["integrity"]=='True': ic="✅"
+                                    elif sucessed[ln]["integrity"]=='False':ic="⛔"
+                                    if sucessed[ln+1]["integrity"]=='True': ic1="✅"
+                                    elif sucessed[ln+1]["integrity"]=='False':ic1="⛔"
+                                    if sucessed[ln+2]["integrity"]=='True': ic2="✅"
+                                    elif sucessed[ln+2]["integrity"]=='False':ic2="⛔"
+                                    print(f"{ln})--{ic}File:{sucessed[ln]['Filename']}     {ln+1})--{ic1}File:{sucessed[ln+1]['Filename']}     {ln+2})--{ic2}File:{sucessed[ln+2]['Filename']}")                    
+                                else:
+                                    if sucessed[ln]["integrity"]=='True': ic="✅"
+                                    elif sucessed[ln]["integrity"]=='False':ic="⛔"
+                                    print(f"{ln})--{ic}File:{sucessed[ln]['Filename']}" )
+                                
+                            print(f"✔️ {len(sucessed)} Files Decrypted\n")
+                            print("🚫",lentarg-len(sucessed),"Files Not Decrypted ")     
+                        if len(notsucessed)>0:
+                                print("\n***Failed List\n")
+                                for r in notsucessed:
+                                    print(f"--File: {r['Filename']}  --Reason:{r['error']}")                                      
+                                print(f"❌ {len(notsucessed)} Files Failed to decrypt...\n")
+                        
+                        exit("Done!") 
+                else:
+                    lprint("⛔")
+                    notsucessed+=[{"Filename":path.basename( Filename),"error" : "The encrypted data you're trying to decrypt has been changed or corrupted!"}]
                     intro()    
                     lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
                     lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
                     lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                     lprint(f"\n| Target: 📝{path.basename(Filename)}")
-                    lprint(f"\n| Size: {bitscv}") 
-                    lprint("\n■Decrypting...")  
-                    if "GB" in bitscv or "TB" in bitscv:lprint("It may take a while...")                 
-                    decryptdata=dpj(fragdata,Pass_KDF)  
-                    lprint("✅" )  
-                    lprint("\n■Checking Data's Integrity...")
-                    integrity=hashlib.sha256(decryptdata).hexdigest()== F_hashed
-                    if integrity==True:
-                        lprint("✅")
-                    else:
-                        lprint("⛔")
-                        print("\n☢️|CheckSum didn't match...")
-                        print("[I]gnore the warning, try to decrypt the file and keep an original copy.")
-                        print("[S]kip this file, do not decrypt it and continue to the next....")
-                        while k!='I' and k!= 'S':
-                            k=keyboard.read_key().upper()
-                        if k=="S":
-                            notsucessed+=[{"Filename": path.basename(Filename),"error" : "CheckSUM Didn't match"}]
-                            FTarget="";decryptdata=bytearray();fragdata=b""
-                            continue
-                        elif k=="I":
-                            print("Copying....Please wait")
-                            copy2(Filename,Filename+"_!DPJ_Copy")
-                    lprint("\n■Patching...")
-                    FTarget=open(Filename,"rb+")
-                    FTarget.seek(BytesPosition)
-                    FTarget.write(decryptdata)
-                    FTarget.seek(0)
-                    FTarget.truncate(Fsize)
-                    FTarget.close             
-                    fragdata=b"";decryptdata=bytearray()
-                    sucessed+=[{"Filename": path.basename(Filename),"integrity" : str(integrity)}]
-                    lensuc=len(sucessed)
-                    lprint("✅")
-                except IOError as errz:
-                    lprint("⛔")
-                    notsucessed+=[{"Filename": path.basename(Filename),"error" : str(errz)}]
-                    FTarget="";decryptdata=bytearray();fragdata=b""
-                except KeyboardInterrupt as kk:
-                    print("\n|DECRYPTION PROCESS CANCELED...🙄\n")            
-                    print("|Result:\n")     
-                    if lensuc>0:
-                        print("***Decrypted List\n")
-                        for ln in range(0,lensuc,3):            
-                            if ln+2<lensuc:
-                                if sucessed[ln]["integrity"]=='True': ic="✅"
-                                elif sucessed[ln]["integrity"]=='False':ic="⛔"
-                                if sucessed[ln+1]["integrity"]=='True': ic1="✅"
-                                elif sucessed[ln+1]["integrity"]=='False':ic1="⛔"
-                                if sucessed[ln+2]["integrity"]=='True': ic2="✅"
-                                elif sucessed[ln+2]["integrity"]=='False':ic2="⛔"
-                                print(f"{ln})--{ic}File:{sucessed[ln]['Filename']}     {ln+1})--{ic1}File:{sucessed[ln+1]['Filename']}     {ln+2})--{ic2}File:{sucessed[ln+2]['Filename']}")                    
-                            else:
-                                if sucessed[ln]["integrity"]=='True': ic="✅"
-                                elif sucessed[ln]["integrity"]=='False':ic="⛔"
-                                print(f"{ln})--{ic}File:{sucessed[ln]['Filename']}" )
-                            
-                        print(f"✔️ {len(sucessed)} Files Decrypted\n")
-                        print("🚫",lentarg-len(sucessed),"Files Not Decrypted ")     
-                    if len(notsucessed)>0:
-                            print("\n***Failed List\n")
-                            for r in notsucessed:
-                                print(f"--File: {r['Filename']}  --Reason:{r['error']}")                                      
-                            print(f"❌ {len(notsucessed)} Files Failed to decrypt...\n")
-                    
-                    exit("Done!") 
+                    lprint(f"\n| Size: {bitscv}")
             else:
                 lprint("⛔")
                 notsucessed+=[{"Filename":path.basename( Filename),"error" : "Invalid passphrase!"}]
@@ -497,8 +517,10 @@ def main():
                 lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
                 lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                 lprint(f"\n| Target: 📝{path.basename(Filename)}")
-                lprint(f"\n| Size: {bitscv}")
-                
+                lprint(f"\n| Size: {bitscv}")        
+        
+        
+        
         intro()
         if len(sucessed)>0 and len(notsucessed)==0:titledone="|DONE DECRYPTING...😃" 
         if len(sucessed)>0 and len(notsucessed)>0:titledone="|DONE DECRYPTING BUT...😱" 
@@ -530,8 +552,12 @@ def main():
         print(f"✔️ {len(sucessed)} Files Decrypted"  if sucessed else "")    
         
         exit("Done!")
-         
+
+
+     
+ 
 if __name__ == "__main__":
     main()    
 
 #Developed by Jheff Mat(iCODEXYS) 12/22/2022
+
