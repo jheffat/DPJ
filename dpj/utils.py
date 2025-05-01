@@ -1,9 +1,10 @@
 #  -*- coding: utf-8 -*-
-
+from cryptography.fernet import Fernet,InvalidToken
 from shutil import copy2
+from random import shuffle
 from string import ascii_letters,digits
-from os import system,path #,getuid #<---Only for Linux/MacOSX
-import glob, platform,re,keyboard, bcrypt,argparse,hashlib,time
+from os import system,path,urandom #,getuid #<---Only for Linux/MacOSX
+import glob, platform,re,keyboard, bcrypt,argparse,hashlib,time,hmac,base64
 from json import loads
 from secrets import choice
 from sys import exit,stdout
@@ -11,13 +12,23 @@ from datetime import datetime
 def KDF(Pass,Salt,bk,r):
     return  bcrypt.kdf(Pass,salt=Salt,desired_key_bytes=bk,rounds=r)
 
-def dpj(data,key):
+
+def dpj_e(data,key,iv):
     klen=len(key)  
-    dx=bytearray();dy=bytearray();dz=bytearray() 
-    dx+=bytes([n-key[c%klen] & 255 for c,n in enumerate(data)])      
-    dy+=bytes([(n^key[c%klen]) for c,n in enumerate(dx)])          
-    dz+=bytes([n+key[c%klen] & 255 for c,n in enumerate(dy)])
-    return dz
+    kiv=len(iv)
+    data = bytearray([n ^ iv[c % kiv] for c, n in enumerate(data)]) 
+    data=bytearray([n-key[c%klen] & 255 for c,n in enumerate(data)])      
+    data=bytearray([(n^key[c%klen]) for c,n in enumerate(data)])          
+    data=bytearray([n+key[c%klen] & 255 for c,n in enumerate(data)])
+    return data
+def dpj_d(data,key,iv):
+    klen=len(key)  
+    kiv=len(iv) 
+    data=bytearray([n-key[c%klen] & 255 for c,n in enumerate(data)])      
+    data=bytearray([(n^key[c%klen]) for c,n in enumerate(data)])          
+    data=bytearray([n+key[c%klen] & 255 for c,n in enumerate(data)])
+    data = bytearray([n ^ iv[c % kiv] for c, n in enumerate(data)]) 
+    return data
 
 def isZipmp3rarother(fname):
     r=Filehandle(fname,0,4)
@@ -58,10 +69,16 @@ def byteme(b):
 def is_binary(fcontent):
      return (b'\x00' in fcontent)
 
-def genpass():
-    chars="koijQh4uW3!y1@gEM2#ftNR$rdBT6se^5VYw&7Ca*8U9q.0X,lI?ZpAm+SODc-FbGPHv/JxKLz";PasswordGen=""
-    PasswordGen+="".join(choice(chars) for _ in range(18))
-    return PasswordGen
+def genpass(l,n,s):
+    numbers=['0','1','2','3','4','5','6','7','8','9']
+    letters=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    special=['!','@','#','$','%','^','&','*','?']
+    n_let=[choice(letters) for _ in range(l)]
+    n_num=[choice(numbers) for _ in range(n)]
+    n_spe=[choice(special) for _ in range(s)]        
+    chars=n_let+n_num+n_spe
+    shuffle(chars)
+    return "".join(chars)
 
 def keypress(key):
     keyboard.wait(key)
@@ -95,18 +112,33 @@ def Filehandle(Filename,p,b):
     return fd
 
 def isencrypted (fname):
-    key=Metakey   
-    try:
-        Fs=filesize(fname)
-        r=open(fname,"rb");metadata=""
-        r.seek(Fs-399)
-        fragdt=r.read()      
-        metadata="".join(list(map(chr, dpj(fragdt,key))))
-        if '"#DPJ":"!CDXY"' in metadata: 
-            return loads(metadata)
-    except:
-        return ""
+    Fs=filesize(fname)
+    r=open(fname,"rb");metadata=""
+    r.seek(Fs-780)
+    fragdt=r.read()
+    r.close()
+    MetaKey=Filehandle(fname,Fs-824,44) 
+    if isx(fragdt,MetaKey)==True:
+        try:        
+            metadata=Fernet(MetaKey).decrypt(fragdt).decode()
+            if '"#DPJ":"!CDXY"' in metadata: 
+                return loads(metadata)
+        except:
+            return ""
     return ""
+def isx(data, key):
+    try:
+        decoded_data = base64.urlsafe_b64decode(data)
+        if len(decoded_data) < 49:
+            return False
+        f = Fernet(key)
+        try:
+            f.decrypt(data)
+            return True  
+        except InvalidToken:
+            return False  
+    except Exception:
+        return False  
         
 def intro():
     if platform.system()=='Linux':
@@ -120,7 +152,7 @@ def intro():
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.0.7  (04/22/2025)
+| |_| ||  __/| |_| |     📊: 3.5.0  (04/30/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.""" )                                                     
 def warning():
@@ -130,24 +162,27 @@ def warning():
         _ = system("cls")
     else:
         _ = system("clear")  
-    print("""##      ##    ###    ########  ##    ## #### ##    ##  ######   
-##  ##  ##   ## ##   ##     ## ###   ##  ##  ###   ## ##    ##  
-##  ##  ##  ##   ##  ##     ## ####  ##  ##  ####  ## ##        
-##  ##  ## ##     ## ########  ## ## ##  ##  ## ## ## ##   #### 
-##  ##  ## ######### ##   ##   ##  ####  ##  ##  #### ##    ##  
-##  ##  ## ##     ## ##    ##  ##   ###  ##  ##   ### ##    ##  
- ###  ###  ##     ## ##     ## ##    ## #### ##    ##  ######   """)
-    print("_"*80,"|")
-    print("\n|☢️| Please follow the rules & consequences of this action:")
-    print("*--->Forgetting your password means that you will lose your encrypted data....forever ;( ")
-    print("*--->A Password that you type or auto-generate, make sure to write it down...Press [P] to show it.") 
-    print("*--->Any action encrypt/decrypt a file, will generate a file log 'encryption.log' / 'decryption.log'....")
-    print("*--->DPJ is capable to detect if a file is encrypted or not...")
-    print("*--->Also is capable to check if the password is correct or not, before touching the file.")
-    print("*--->By Pressing [ENTER] you are aware of your own responsibility of your data!")
-    print("-"*80,"|\n")
-    print
+    print("""                            
+    ██████╗ ██╗███████╗ ██████╗██╗      █████╗ ██╗███╗   ███╗███████╗██████╗ 
+    ██╔══██╗██║██╔════╝██╔════╝██║     ██╔══██╗██║████╗ ████║██╔════╝██╔══██╗
+    ██║  ██║██║███████╗██║     ██║     ███████║██║██╔████╔██║█████╗  ██████╔╝
+    ██║  ██║██║╚════██║██║     ██║     ██╔══██║██║██║╚██╔╝██║██╔══╝  ██╔══██╗
+    ██████╔╝██║███████║╚██████╗███████╗██║  ██║██║██║ ╚═╝ ██║███████╗██║  ██║
+    ╚═════╝ ╚═╝╚══════╝ ╚═════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝     """)
+    print("_"*80)
+    print("\n|⚠️| DPJ is a secure encryption tool intended for responsible use. ")
+    print("By using this software, you acknowledge and accept the following:")
+    print("*--->A Passphrase that you type or auto-generate, make sure to write it down...Press [P] to show it.") 
+    print("*--->You are solely responsible for managing your passwords, keys, and encrypted data.")
+    print("*--->If you lose or forget your passphrase, there is no way to recover your data.")
+    print("*--->This is by design, as DPJ does not store or transmit any recovery information.")
+    print("*--->The author(s) of DPJ are not liable for any data loss, damage, or consequences resulting ")
+    print("from misuse, forgotten credentials, or failure to follow best security practices.\n")
+    print("|☢️|Use at your own risk.")
+    print("-"*80,"\n")
+   
     print("Press [ENTER] to Proceed or [ESC] to Cancel the process...")
+    
     key_p=0
     while True:
             if keyboard.is_pressed('enter'): break
@@ -163,7 +198,7 @@ def helpscr():
           dpj -s *.* -r             -->Scan all encrypted files including files in subdirectories
           dpj -sh *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
           """)
-global Metakey, Original_Password
-Metakey=KDF(b"#IC)D#X!Sd@t@pJ3ff3rs0n",b"s87r444r4e4w4#s@^43",32,100)
-#Developed by Jheff Mat(iCODEXYS) since 02-11-2021
+global MetaKey, Original_Password
 
+
+#Developed by Jheff Mat(iCODEXYS) since 02-11-2021
