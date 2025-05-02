@@ -2,36 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),  
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
-### Added
-- Initial outline for IV and HMAC support (coming in v2.0.0).
-- Placeholder for future changelog entries.
 
 ---
 
-## [1.1.0] - 2025-04-15
+## [3.5.0] - 2025-30-04
 ### Added
-- Hashing support: single file, multiple files, and plain text hashing.
-- Support for multiple hash algorithms (SHA-256, SHA-512, etc.).
-
+- Hash tools included, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1, sha512, shake_128, shake_256, sha3_256, blake2s, md5)
+- SHA-256-based HMAC.
+- KDF Support, Passphrases are transformed via a Key Derivation Function before use, making brute-force attempts extremely difficult.
+- IV Support, Uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
 ### Changed
-- Modularized hashing functionality in the DPJ CLI.
-
+- Encrypted Metadata with AES.
+- Choose or Autogenerate Passphrase more complex.
+- Progressbar Built-in(no Module needs anymore)
+- Disclosure
+- Better CLI Parameters
 ---
 
-## [1.0.0] - 2025-04-01
+## [2.55.0] - 2022-22-12
 ### Added
-- Core encryption and decryption commands.
-- Secure passphrase handling.
-- Metadata protection.
+- Password convertion to hash for a better encryption by XORing.
+- Password Hashing handled by Bcrypt.
 - File integrity check feature.
-
+- Progressbar Module.
+- Choose or Autogenerate Passphrase.
+- Disclosure.
+### Changed
+- Encrypted Metadata by Better XORing .
+- File Handling.
+- No Overwriting.
 ---
 
-## [0.1.0] - 2024-12-01
+## [1.0.0] - 2020-28-10
 ### Added
-- Prototype version based on Fixor encryption tool.
+- Encrypted Metadata by XORing.
+- Function to scan encrypted files, encrypt and decrypt based on XORing method for content and metadata
+- CLI Parameters 
+- No Overwriting.
