@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - SHA-256-based HMAC.
 - KDF Support, Passphrases are transformed via a Key Derivation Function before use, making brute-force attempts extremely difficult.
 - IV Support, Uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
+- Name FiXOR Changed to DPJ.
 ### Changed
 - Encrypted Metadata with AES.
 - Choose or Autogenerate Passphrase more complex.
