@@ -10,14 +10,12 @@
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.
 
-✨ New in v3.5.0 — HMAC & IV Support 
-
 ```
 
 # 🔐 DPJ - CLI Data Cryptographic Tool
 
 **DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ 
- in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom method, built with python. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.).
+ in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom method, built with python. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.). -->✨ [Changelog](https://raw.githubusercontent.com/jheffat/DPJ/main/changelog.md)
 
 ## 🧾 Features
 
