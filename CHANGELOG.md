@@ -18,6 +18,12 @@ All notable changes to this project will be documented in this file.
 - Progressbar Built-in(no Module needs anymore)
 - Disclosure
 - Better CLI Parameters
+- Encrypt data with Multi-Layer Linear Transformation:
+  A layered sequence of simple but powerful operations applied to the data:
+  - **Subtraction** using the derived key
+  - **XOR** using the derived key
+  - **Addition** using the derived key
+  - Final **XOR** with a IV unique.
 ---
 
 ## [2.55.0] - 2022-22-12
@@ -40,3 +46,4 @@ All notable changes to this project will be documented in this file.
 - Function to scan encrypted files, encrypt and decrypt based on XORing method for content and metadata
 - CLI Parameters 
 - No Overwriting.
+- Encrypt data using XOR with a key.
