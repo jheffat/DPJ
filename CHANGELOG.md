@@ -26,10 +26,10 @@ All notable changes to this project will be documented in this file.
 - Better CLI Parameters
 - Encrypt data with Multi-Layer Linear Transformation:
   A layered sequence of simple but powerful operations applied to the data:
-  - **Subtraction** using the derived key
-  - **XOR** using the derived key
-  - **Addition** using the derived key
-  - Final **XOR** with a IV unique.
+  - **Subtraction** + the derived key
+  - **XOR** + the derived key
+  - **Addition** + the derived key
+  - Final **XOR** + a IV unique.
 ---
 
 ## [2.55.0] - 2022-22-12
