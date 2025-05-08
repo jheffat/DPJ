@@ -1,8 +1,9 @@
 #  -*- coding: utf-8 -*-
 from .utils import *
+
 def main():   
     Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
-    MetaKey=base64.b64encode(KDF(genpass(18,9,7).encode(),urandom(18),32,100))
+    MetaKey=base64.b64encode(KDF(genpass(18,9,7).encode(),urandom(18),32,200000)).strip(b'=')
     if platform.system()!="Windows":
         if getuid()>0:
             print("--Permission denied--x_x")
@@ -251,20 +252,21 @@ def main():
             print("Press [ENTER] to continue...")
             keypress('enter')    
         
-        Original_Password=Password
+ 
 
         lp=len(Password)
        
         lentarg=len(targets) 
-        warning() 
+        disclaimer(Password) 
         lprint("\n| Starting...")
         for scf,Filename in enumerate(targets):  
             try:
                 
-                Salt=bcrypt.gensalt()
+                Salt=urandom(16)
                 iv=urandom(16)
-                Pass_KDF=KDF(Password.encode() ,Salt,32,100)
-                Pass_Hashed=passhash(Pass_KDF,Salt)
+                iters=rint()
+                Pass_KDF=KDF(Password.encode() ,Salt,32,iters)
+                Pass_Hashed=hashpass(Salt,iters,Pass_KDF)
                 Fsize=filesize(Filename);bitscv=byteme(str(Fsize))
                         
                 fragbyte=isZipmp3rarother(Filename)
@@ -300,8 +302,8 @@ def main():
                 hmc= hmac.new(Pass_KDF, encryptdata, hashlib.sha256).digest()
                 lprint("✅")   
                 stdout.write("\n■Patching...")
-                dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+'","posbytes":"'+str(posbyte).rjust(15,"*")+'","tarbytes":"'+str(ldata).rjust(15,"*")+'","date":"'+str(datetime.now().date()).rjust(10,"*")+'","iv":"'+str(iv.hex()).rjust(32,"*")+'","hmac":"'+str(hmc.hex()).rjust(64,"*")+'","pass":"'+str(Pass_Hashed.hex()).rjust(120,"*")+'","integrity":"'+str(F_hashed.hex()).rjust(64,"*")+'","os":"'+platform.system().rjust(12,"*")+'","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
-                Metadatax=Fernet(MetaKey).encrypt(dpj_dict)        
+                dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+'","posbytes":"'+str(posbyte).rjust(15,"*")+'","tarbytes":"'+str(ldata).rjust(15,"*")+'","date":"'+str(datetime.now().date()).rjust(10,"*")+'","iv":"'+str(iv.hex()).rjust(32,"*")+'","hmac":"'+str(hmc.hex()).rjust(64,"*")+'","pass":"'+str(Pass_Hashed.hex()).rjust(108,"*")+'","integrity":"'+str(F_hashed.hex()).rjust(64,"*")+'","os":"'+platform.system().rjust(12,"*")+'","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
+                Metadatax=Fernet(MetaKey+b'=').encrypt(dpj_dict)        
                 FTarget=open(Filename,"rb+")
                 FTarget.seek(posbyte)
                 FTarget.write(encryptdata)
@@ -411,18 +413,20 @@ def main():
             lprint(f"\n■Reading Next File #{scf}: {path.basename(Filename.upper())}...")
             AFsize=filesize(Filename)
             headinfo=isencrypted(Filename) 
-            passhashed=bytes.fromhex(headinfo["pass"])
+            passhashed=hashparser(bytes.fromhex(headinfo["pass"]))
             iv=bytes.fromhex(headinfo['iv'])
             hmc=bytes.fromhex(headinfo['hmac'])
             F_hashed=bytes.fromhex(headinfo["integrity"])
-            Salted=passhashed[:29]
-            Pass_KDF=KDF(Password.encode(),Salted,32,100)
+            iters=passhashed[0]
+            Salted=passhashed[1]
+            hkey=passhashed[2] 
+            Pass_KDF=KDF(Password.encode(),Salted,32,iters)
             bitscv=byteme(str(AFsize)) 
             Fsize=int(headinfo["size"].replace("*",""))
             BytesTarget=int(headinfo["tarbytes"].replace("*","")) 
             BytesPosition=int(headinfo["posbytes"].replace("*",""))      
             fragdata=Filehandle(Filename,BytesPosition,BytesTarget)             
-            ispass=checkpass(Pass_KDF,passhashed) 
+            ispass=Pass_KDF==hkey
             ishmac=hmac.new(Pass_KDF,fragdata,hashlib.sha256).digest()==hmc
             if ispass:
                 if ishmac:
@@ -555,9 +559,9 @@ def main():
 
 
      
- 
+
 if __name__ == "__main__":
+    
     main()    
 
 #Developed by Jheff Mat(iCODEXYS) 12/22/2022
-
