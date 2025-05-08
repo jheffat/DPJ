@@ -21,7 +21,7 @@ The original name, Fixor, was chosen because the first version of the tool used 
 
 DPJ has a deeper significance: it was the name of my first encryption tool, created in 2002 with QBASIC(CLI) later VB(GUI). Bringing the name back honors that origin while also marking the maturity of this version.
 
-This release marks a turning point — DPJ is no longer a simple XOR tool, but a full encryption system with real nonlinear complexity.
+This release marks a turning point — DPJ is no longer a simple XOR tool, but a full encryption system with real linear complexity...🔜nonlinear
 
 ## 🧾 Features
 - 🔒 **Fast Encrypt & Decrypt Files**, using custom-built encryption.
