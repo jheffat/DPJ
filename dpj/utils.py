@@ -1,7 +1,7 @@
 #  -*- coding: utf-8 -*-
 from cryptography.fernet import Fernet,InvalidToken
 from shutil import copy2
-from random import shuffle
+from random import shuffle,randint
 from string import ascii_letters,digits
 from os import system,path,urandom #,getuid #<---Only for Linux/MacOSX
 import glob, platform,re,keyboard, bcrypt,argparse,hashlib,time,hmac,base64
@@ -9,13 +9,12 @@ from json import loads
 from secrets import choice
 from sys import exit,stdout
 from datetime import datetime
-def KDF(Pass,Salt,bk,r):
-    return  bcrypt.kdf(Pass,salt=Salt,desired_key_bytes=bk,rounds=r)
 
 
 def dpj_e(data,key,iv):
     klen=len(key)  
     kiv=len(iv)
+
     data = bytearray([n ^ iv[c % kiv] for c, n in enumerate(data)]) 
     data=bytearray([n-key[c%klen] & 255 for c,n in enumerate(data)])      
     data=bytearray([(n^key[c%klen]) for c,n in enumerate(data)])          
@@ -46,10 +45,27 @@ def Fn_clear(fname):
         if c not in ascii_letters+digits+" !@#$%^&-+;.~_éáíóúñÑ":
             fname=fname.replace(c,"")        
     return fname
-def passhash(Pass ,Salt ):
-    return bcrypt.hashpw(Pass,salt=Salt)
-def checkpass(Pass,Passhashed):
-    return bcrypt.checkpw(Pass,Passhashed)
+def rint():
+    return randint(100000,150000)
+
+def hashpass(salt,iter,key):
+    result=[]
+    for i in range(len(key)):
+        if i<len(salt): result+=[salt[i]]
+        if i<len(key): result+=[key[i]]
+    return bytes(result+list(map(ord,str(iter))))
+
+def hashparser(h):
+    salt=[];p=[]    
+    salt+=[h[i]  for i in range(0,32,2)]  
+    p+=[h[i] for i in range(1,32,2)]
+    hashed=bytes(p)+h[32:48]
+    iters=int(h[48:])
+    return (iters,bytes(salt),hashed)
+
+def KDF(Pass,Salt,bk,r) ->bytes:
+    return  hashlib.pbkdf2_hmac('sha3_512', Pass, Salt,r, dklen=bk)
+
 def filesize(fname):
     f=open(fname,"rb");f.seek(0,2 );s=f.tell();f.close
     return s
@@ -92,6 +108,7 @@ def ValidPass(Passwd):
                     if  re.search("[@#$!%&]",Passwd):
                         return True
     return False
+
 def recursive(par):
    lf=glob.glob("./"+par)
    lf2=glob.glob("./**/"+par)
@@ -104,6 +121,7 @@ def recursive(par):
    lf9=glob.glob("./**/**/**/**/**/**/**/**/**/"+par)
    lf+=lf2+lf3+lf4+lf5+lf6+lf7+lf8+lf9
    return lf
+
 def Filehandle(Filename,p,b):
     rf=open(Filename,"rb")
     rf.seek(p)
@@ -114,18 +132,19 @@ def Filehandle(Filename,p,b):
 def isencrypted (fname):
     Fs=filesize(fname)
     r=open(fname,"rb");metadata=""
-    r.seek(Fs-780)
+    r.seek(Fs-760)
     fragdt=r.read()
     r.close()
-    MetaKey=Filehandle(fname,Fs-824,44) 
-    if isx(fragdt,MetaKey)==True:
+    MetaKey=Filehandle(fname,Fs-803,43) 
+    if isx(fragdt,MetaKey+b'=')==True:
         try:        
-            metadata=Fernet(MetaKey).decrypt(fragdt).decode()
+            metadata=Fernet(MetaKey+b'=').decrypt(fragdt).decode()
             if '"#DPJ":"!CDXY"' in metadata: 
                 return loads(metadata)
         except:
             return ""
     return ""
+
 def isx(data, key):
     try:
         decoded_data = base64.urlsafe_b64decode(data)
@@ -152,10 +171,10 @@ def intro():
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.5.0  (04/30/2025)
+| |_| ||  __/| |_| |     📊: 3.5.2  (05/04/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.""" )                                                     
-def warning():
+def disclaimer(p):
     if platform.system()=='Linux':
         _ = system('clear')
     elif platform.system()=='Windows':
@@ -186,7 +205,7 @@ def warning():
     key_p=0
     while True:
             if keyboard.is_pressed('enter'): break
-            if keyboard.is_pressed('P') and key_p==0: print("--->Your Password:"+Original_Password);key_p=1    
+            if keyboard.is_pressed('P') and key_p==0: print("--->Your Password:"+p);key_p=1    
             if keyboard.is_pressed('esc'): exit("Canceled...") 
 
 def helpscr(): 
@@ -198,7 +217,7 @@ def helpscr():
           dpj -s *.* -r             -->Scan all encrypted files including files in subdirectories
           dpj -sh *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
           """)
-global MetaKey, Original_Password
+global MetaKey 
 
 
 #Developed by Jheff Mat(iCODEXYS) since 02-11-2021
