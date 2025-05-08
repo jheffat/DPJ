@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [3.5.2] - 2025-30-04
+## [3.5.2] - 2025-08-05
 ### Changed
 - Strong Password Hashing storage + random (salt/iteration count) per file.
 - Encryption/Decryption more Faster.
