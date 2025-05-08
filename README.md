@@ -28,7 +28,7 @@ This release marks a turning point — DPJ is no longer a simple XOR tool, but a
 - ⚡ **IV Support**,  Uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
 - 🧠 **Choose or Autogenerate Passphrase**, for encryption
 - 🚫 **No Overwrites**, a file will not be altered if the provided passphrase is incorrect. DPJ detects if a file is encrypted and prevents redundant encryption.
-- 🔐 **KDF Support**, Passphrases are transformed via a `Key Derivation Function` before use, making brute-force attempts extremely difficult.
+- 🔑 **KDF Support**, Passphrases are transformed via a `Key Derivation Function` before use, making brute-force attempts extremely difficult.
 - 🧂 **Secure Password Hashing**, stored in encrypted metadata
 - 🧬 **Encrypted Metadata with AES**, Used to protect internal config
 - 🔍 **File Scan Mode**, to check encryption details
