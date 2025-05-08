@@ -32,7 +32,7 @@
 - #️⃣ **Hash tools included**, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
 
 ## ☠️Please Note!
-Im using a custom-built encryption, is multilayer linear transformation(See more in [CHANGELOG.MD](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)). For now Im rebuilding DPJ to be able to encrypt more secure with methods used in real world cryptographic like AES. The reason I building encryption from scratch(no modules ej:cryptographic.fernet) is to learning and get improve my problem-solving skill.
+Im using a custom-built encryption, is multilayer linear transformation(See more in [CHANGELOG.MD](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)). For now Im rebuilding DPJ to be able to encrypt more secure with methods used in real world cryptographic like AES. The reason I building encryption from scratch(no modules ej:cryptographic.fernet) is to learn and improve my problem-solving skill.
 
 
 ## 🚀 Performance
