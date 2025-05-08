@@ -6,7 +6,7 @@
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🛠️: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.5.0  (04/30/2025)
+| |_| ||  __/| |_| |     📊: 3.5.2  (05/04/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.
 
@@ -15,21 +15,25 @@
 # 🔐 DPJ - CLI Data Cryptographic Tool
 
 **DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ 
- in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom method, built with python. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.). -->✨ [Changelog](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)
+ in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom-built methods. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.). -->✨ [Changelog](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)
 
 ## 🧾 Features
 
-- 🔒 **Encrypt & Decrypt Files**, using strong cryptography
+- 🔒 **Fast Encrypt & Decrypt Files**, using custom-built encryption.
 - ⚡ **IV Support**,  Uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
 - 🧠 **Choose or Autogenerate Passphrase**, for encryption
-- 🚫 **No Overwrites**, a file will not be altered if the provided passphrase is incorrect. DPJ detects if a file is encrypted and prevents redundant encryption
+- 🚫 **No Overwrites**, a file will not be altered if the provided passphrase is incorrect. DPJ detects if a file is encrypted and prevents redundant encryption.
 - 🔐 **KDF Support**, Passphrases are transformed via a `Key Derivation Function` before use, making brute-force attempts extremely difficult.
-- 🧂 **Secure Password Hashing with bcrypt**, stored in encrypted metadata
+- 🧂 **Secure Password Hashing**, stored in encrypted metadata
 - 🧬 **Encrypted Metadata with AES**, Used to protect internal config
 - 🔍 **File Scan Mode**, to check encryption details
 - ✅ **Integrity Check Passed**, A SHA-256-based verification step checks whether the decrypted data matches the original, ensuring the decryption process was successful.
 - 🛡️ **HMAC Support**, A SHA-256-based HMAC is generated during encryption and verified during decryption to detect tampering or corruption.
 - #️⃣ **Hash tools included**, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
+
+## ☠️Please Note!
+Im using a custom-built encryption, is multilayer linear transformation(See more in CHANGELOG.MD). For now Im rebuilding DPJ to be able to encrypt more secure with methods used in real world cryptographic like AES. The reason I building encryption from scratch(no modules ej:cryptographic.fernet) is to learning and get improve my problem-solving skill.
+
 
 ## 🚀 Performance
 

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.5.2] - 2025-30-04
+### Changed
+- Better Password Hashing storage + random (salt/iteration count) per file.
+- Encryption/Decryption more Faster.
+---
+
 ## [3.5.0] - 2025-30-04
 ### Added
 - Hash tools included, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1, sha512, shake_128, shake_256, sha3_256, blake2s, md5)
