@@ -17,9 +17,9 @@
 **DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ, is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom-built methods. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.). -->✨ [Changelog](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)
 
 ## ❓Why the name change?
-The original name, Fixor, was chosen because the first version of the tool used only XOR-based encryption with a fixed key. As the project evolved to include more advanced cryptographic mechanisms, the name no longer reflected its capabilities.
+The original name, Fixor, was chosen because the first version of the tool used only XOR-based encryption with a fixed key in 2021. As the project evolved to include more advanced cryptographic mechanisms, the name no longer reflected its capabilities.
 
-DPJ has a deeper significance: it was the name of my first encryption tool, created in 2002. Bringing the name back honors that origin while also marking the maturity of this version.
+DPJ has a deeper significance: it was the name of my first encryption tool, created in 2002 with QBASIC(CLI) later VB(GUI). Bringing the name back honors that origin while also marking the maturity of this version.
 
 This release marks a turning point — DPJ is no longer a simple XOR tool, but a full encryption system with real nonlinear complexity.
 
