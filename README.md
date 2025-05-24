@@ -21,7 +21,7 @@
 
 The original name, Fixor, was chosen because the first version of the tool used only XOR-based encryption with a fixed key in 2021. As the project evolved to include more advanced cryptographic mechanisms, the name no longer reflected its capabilities.
 
-DPJ has a deeper significance: it was the name of my first encryption tool [DPJ Basic](https://github.com/jheffat/DPJ/blob/main/scrnsht/DPJ%20Basic%20by%20VB.png), created in 2001 with QBASIC(CLI) later in 2005 with VB(GUI). Bringing the name back honors that origin while also marking the maturity of this version.
+DPJ has a deeper significance: it was the name of my first encryption tool [DPJ Basic](https://github.com/jheffat/DPJ/blob/main/scrnsht/DPJ%20Basic%20by%20VB.png), created in 2001 with QBASIC(CLI), later in 2005 with VB(GUI). Bringing the name back honors that origin while also marking the maturity of this version.
 
 This release marks a turning point — DPJ is no longer a simple XOR tool, but a full encryption system with real IV, linear & nonlinear complexity...
 
