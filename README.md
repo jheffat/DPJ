@@ -6,7 +6,7 @@
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🛠️: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.5.2  (05/04/2025)
+| |_| ||  __/| |_| |     📊: 3.5.3  (05/04/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.
 
@@ -14,21 +14,28 @@
 
 # 🔐 DPJ - CLI Data Cryptographic Tool
 
-**DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ, is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom-built methods. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.). -->✨ [Changelog](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)
+**DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ 
+ in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, more secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom-built methods. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.). -->✨ [Changelog](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)
 
 ## ❓Why the name change?
+
 The original name, Fixor, was chosen because the first version of the tool used only XOR-based encryption with a fixed key in 2021. As the project evolved to include more advanced cryptographic mechanisms, the name no longer reflected its capabilities.
 
-DPJ has a deeper significance: it was the name of my first encryption tool, created in 2002 with QBASIC(CLI) later VB(GUI). Bringing the name back honors that origin while also marking the maturity of this version.
+DPJ has a deeper significance: it was the name of my first encryption tool, created in 2001 with QBASIC(CLI) later in 2005 with VB(GUI). Bringing the name back honors that origin while also marking the maturity of this version.
 
-This release marks a turning point — DPJ is no longer a simple XOR tool, but a full encryption system with real linear complexity...🔜nonlinear
+This release marks a turning point — DPJ is no longer a simple XOR tool, but a full encryption system with real IV, linear & nonlinear complexity...
+
+
 
 ## 🧾 Features
-- 🔒 **Fast Encrypt & Decrypt Files**, using custom-built encryption.
+
+- 🔒 **Fast Encrypt & Decrypt Files**, using custom-built  encryption.
+- 🌀 **Nonlinear Transformation Support**, Integrated AES-like S-box, P-box, XOR mixing & byte inversion. Improves resistance to differential and linear cryptanalysis.
 - ⚡ **IV Support**,  Uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
 - 🧠 **Choose or Autogenerate Passphrase**, for encryption
 - 🚫 **No Overwrites**, a file will not be altered if the provided passphrase is incorrect. DPJ detects if a file is encrypted and prevents redundant encryption.
-- 🔑 **KDF Support**, Passphrases are transformed via a `Key Derivation Function` before use, making brute-force attempts extremely difficult.
+- 🔐 **KDF Support**, Passphrases are transformed via a `Key Derivation Function` before use, making brute-force attempts extremely difficult.
+- 🔑 **Key Schedule Support**, a process that expands the main encryption key(KDF) into multiple round keys used throughout the encryption rounds to enhance security.
 - 🧂 **Secure Password Hashing**, stored in encrypted metadata
 - 🧬 **Encrypted Metadata with AES**, Used to protect internal config
 - 🔍 **File Scan Mode**, to check encryption details
@@ -37,7 +44,7 @@ This release marks a turning point — DPJ is no longer a simple XOR tool, but a
 - #️⃣ **Hash tools included**, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
 
 ## ☠️Please Note!
-Im using a custom-built encryption, is multilayer linear transformation(See more in [CHANGELOG.MD](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)). For now Im rebuilding DPJ to be able to encrypt more secure with methods used in real world cryptographic like AES. The reason I building encryption from scratch(no modules ej:cryptographic.fernet) is to learn and improve my problem-solving skill.
+I’m using a custom-built encryption scheme that applies multilayer linear and nonlinear transformations. Many of these layers are inspired by real-world cryptographic algorithms such as AES (see more in CHANGELOG.md). 😱 However, it has not yet been reviewed by a professional cryptographer. For now, this option is intended for educational purposes only until it can be professionally reviewed. I’m currently rebuilding DPJ to support AES encryption as a second option, offering a more secure and reliable method widely used in both industry and cybercrime. The reason I built this tool from scratch(without relying on external modules) is to deepen my understanding of how encryption works, enhance my learning, and improve my problem-solving skills.
 
 
 ## 🚀 Performance
@@ -75,13 +82,13 @@ pip install dpj
   ++By download and install executable for:
 
 `*Windows`
-[DPJ 3.0.7 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.exe)  (Need to setup your anti-virus to allow using this app)
+[DPJ 3.5.3 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.5.3%20Installer.exe)  (Need to setup your anti-virus to allow using this app)
 
 `*Linux Debian`
-[DPJ_307LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.0.7%20Installer.deb) (Link Dead**Fixing...)
+[DPJ_353LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.5.3%20Installer.deb) (Link Dead**Fixing...)
 
    ```bash
-   sudo dpkg -i DPJ_307LinuxDeb.deb
+   sudo dpkg -i DPJ_353LinuxDeb.deb
    ```
 
 
