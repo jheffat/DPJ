@@ -1,33 +1,112 @@
 #  -*- coding: utf-8 -*-
 from cryptography.fernet import Fernet,InvalidToken
 from shutil import copy2
-from random import shuffle,randint
+from random import shuffle,randint,seed
 from string import ascii_letters,digits
+import numpy as np
 from os import system,path,urandom #,getuid #<---Only for Linux/MacOSX
-import glob, platform,re,keyboard, bcrypt,argparse,hashlib,time,hmac,base64
+import glob, platform,re,keyboard,argparse,hashlib,time,hmac,base64
 from json import loads
 from secrets import choice
 from sys import exit,stdout
 from datetime import datetime
+def padding(data: np.ndarray, block_size: int = 16) -> np.ndarray:
+    pad_len = block_size - (len(data) % block_size)
+    if pad_len == 0:
+        pad_len = block_size
+    padding = np.full((pad_len,), pad_len, dtype=np.uint8)
+    return np.concatenate((data, padding)),padding
+def generate_round_keys(master_key, rounds):
+    round_keys = [master_key]
+    for i in range(rounds):
+        prev = round_keys[-1]
+        next_key = bytes((b ^ ((i * 17 + j * 31) % 256)) for j, b in enumerate(prev))
+        round_keys.append(next_key)
+    return round_keys
+def swap_16bytes(data):
+    data = data.reshape(-1, 16)  
+    swapped = data[:, ::-1]
+    return swapped.flatten()
+def invertbytes(c):
+   return c[::-1]
+def insertbytes(d,i,b):
+    return d[:i] + b + d[i:]
+def getbytes(d,i,l):
+    return d[i:i+l]
+def subtract_key(data, key):
+    key_expanded = np.resize(key, data.shape)
+    result = (data - key_expanded) % 256
+    return result.astype(np.uint8)
+def add_key(data, key):
+    key_expanded = np.resize(key, data.shape)
+    result = (data + key_expanded) % 256
+    return result.astype(np.uint8)
+def xor_key(data, key):
+    key_expanded = np.resize(key, data.shape)
+    result = np.bitwise_xor(data, key_expanded)
+    return result
 
+def nonlinear(block,key,sbox,pbox):
+    block = sbox[block]
+    block = block[pbox]
+    block= np.bitwise_xor(block, key[:16])
+    block=swap_16bytes(block)
+    return block
 
-def dpj_e(data,key,iv):
-    klen=len(key)  
-    kiv=len(iv)
+def nonlinear_inv(block,key,sbox,pbox):
+    block=swap_16bytes(block)
+    block= np.bitwise_xor(block, key[:16])
+    block = block[pbox]
+    block = sbox[block]  
+    return block
 
-    data = bytearray([n ^ iv[c % kiv] for c, n in enumerate(data)]) 
-    data=bytearray([n-key[c%klen] & 255 for c,n in enumerate(data)])      
-    data=bytearray([(n^key[c%klen]) for c,n in enumerate(data)])          
-    data=bytearray([n+key[c%klen] & 255 for c,n in enumerate(data)])
-    return data
-def dpj_d(data,key,iv):
-    klen=len(key)  
-    kiv=len(iv) 
-    data=bytearray([n-key[c%klen] & 255 for c,n in enumerate(data)])      
-    data=bytearray([(n^key[c%klen]) for c,n in enumerate(data)])          
-    data=bytearray([n+key[c%klen] & 255 for c,n in enumerate(data)])
-    data = bytearray([n ^ iv[c % kiv] for c, n in enumerate(data)]) 
-    return data
+def generate_sbox(seedx=42):
+    rng = np.random.default_rng(seedx)
+    sbox = np.arange(256, dtype=np.uint8)
+    rng.shuffle(sbox)
+    inv_sbox = np.empty_like(sbox)
+    inv_sbox[sbox] = np.arange(256, dtype=np.uint8)
+    return sbox,inv_sbox
+
+def generate_pbox(block_size=16, seedx=1337):
+    rng = np.random.default_rng(seedx)
+    pbox = np.arange(block_size, dtype=np.uint8)
+    rng.shuffle(pbox)
+    inv_pbox = np.empty_like(pbox)
+    inv_pbox[pbox] = np.arange(len(pbox), dtype=np.uint8)
+    return pbox, inv_pbox
+
+def seedfromKDF(key: bytes) -> int:
+    return int.from_bytes(key, 'big') % (2**32)
+
+def dpj_e(data,mkeys,iv,sbox,pbox):
+    iv_arr = np.frombuffer(iv, dtype=np.uint8)
+    data = np.frombuffer(data, dtype=np.uint8)
+    pad=padding(data,16)
+    data=pad[0]
+    for k in mkeys:    
+        k = np.frombuffer(k, dtype=np.uint8)  
+        blocks = data.reshape(-1, 16)
+        data = np.array([nonlinear(block, k,sbox,pbox) for block in blocks]) 
+        data=xor_key(data,iv_arr)    
+        data=subtract_key(data,k)
+        data=xor_key(data,k)
+        data=add_key(data,k)    
+    return data.tobytes(),len(pad[1])
+
+def dpj_d(data,mkeys,iv,sbox,pbox,padded):
+    if padded:data=data+padded
+    iv_arr = np.frombuffer(iv, dtype=np.uint8)
+    data = np.frombuffer(data, dtype=np.uint8)
+    for k in reversed(mkeys):
+        k = np.frombuffer(k, dtype=np.uint8)       
+        data=subtract_key(data,k)
+        data=xor_key(data,k)
+        data=add_key(data,k)       
+        data=xor_key(data,iv_arr)          
+        blocks = data.reshape(-1, 16)
+        data = np.array([nonlinear_inv(block, k,sbox,pbox) for block in blocks])
+    return data.tobytes()[:-len(padded)]
 
 def isZipmp3rarother(fname):
     r=Filehandle(fname,0,4)
@@ -36,6 +115,7 @@ def isZipmp3rarother(fname):
     elif b'ID3' in r:
         r="";return 0.20
     r="";return 0.02
+    
 def lprint(s):
     stdout.write(s)
     stdout.flush()
@@ -46,7 +126,7 @@ def Fn_clear(fname):
             fname=fname.replace(c,"")        
     return fname
 def rint():
-    return randint(100000,150000)
+    return randint(100000,170000)
 
 def hashpass(salt,iter,key):
     result=[]
@@ -70,17 +150,13 @@ def filesize(fname):
     f=open(fname,"rb");f.seek(0,2 );s=f.tell();f.close
     return s
 def byteme(b):
-    if b.isdigit():
-        b=str(int(b))
-        l=len(b)
-        if l>=1 and l<4: exp=0;nb=" Bytes"
-        if l>=4 and l<7: exp=1;nb=" KB"
-        if l>=7 and l<10: exp=2;nb=" MB"
-        if l>=10 and l<13: exp=3;nb=" GB"
-        if l>=13 and l<16: exp=4;nb=" TB"
-        if l>=16 and l<19: exp=5;nb=" PB"
-        return str(round((int(b)/(1024**exp)),2))+nb
-    return "Invalid digits"
+    if b == 0:return "0 B"
+    units = ["B", "KB", "MB", "GB", "TB", "PB"]
+    i = 0
+    while b >= 1024 and i < len(units) - 1:
+        b /= 1024.0
+        i += 1   
+    return f"{b:.2f} {units[i]}"
 
 def is_binary(fcontent):
      return (b'\x00' in fcontent)
@@ -131,20 +207,18 @@ def Filehandle(Filename,p,b):
 
 def isencrypted (fname):
     Fs=filesize(fname)
-    r=open(fname,"rb");metadata=""
-    r.seek(Fs-760)
-    fragdt=r.read()
-    r.close()
-    MetaKey=Filehandle(fname,Fs-803,43) 
-    if isx(fragdt,MetaKey+b'=')==True:
+    fragdata=Filehandle(fname,Fs-930,-1)
+    MetaKey=invertbytes(getbytes(fragdata,887,43))+b'='
+    metadata=fragdata[:887]+b'='
+    if isx(metadata,MetaKey)==True:
         try:        
-            metadata=Fernet(MetaKey+b'=').decrypt(fragdt).decode()
-            if '"#DPJ":"!CDXY"' in metadata: 
+            metadata=Fernet(MetaKey).decrypt(metadata).decode()
+            
+            if '"#DPJ":"!CDXY"' in metadata:
                 return loads(metadata)
         except:
             return ""
     return ""
-
 def isx(data, key):
     try:
         decoded_data = base64.urlsafe_b64decode(data)
@@ -171,7 +245,7 @@ def intro():
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.5.2  (05/04/2025)
+| |_| ||  __/| |_| |     📊: 3.5.3  (05/04/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.""" )                                                     
 def disclaimer(p):
@@ -217,7 +291,7 @@ def helpscr():
           dpj -s *.* -r             -->Scan all encrypted files including files in subdirectories
           dpj -sh *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
           """)
-global MetaKey 
+global MetaKey
 
 
 #Developed by Jheff Mat(iCODEXYS) since 02-11-2021

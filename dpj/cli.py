@@ -2,8 +2,10 @@
 from .utils import *
 
 def main():   
+   
     Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
     MetaKey=base64.b64encode(KDF(genpass(18,9,7).encode(),urandom(18),32,200000)).strip(b'=')
+    PADDING_BYTES=bytes()
     if platform.system()!="Windows":
         if getuid()>0:
             print("--Permission denied--x_x")
@@ -251,26 +253,21 @@ def main():
             print("Please write it down before the encryption start." )
             print("Press [ENTER] to continue...")
             keypress('enter')    
-        
- 
-
-        lp=len(Password)
        
         lentarg=len(targets) 
         disclaimer(Password) 
         lprint("\n| Starting...")
         for scf,Filename in enumerate(targets):  
             try:
-                
                 Salt=urandom(16)
                 iv=urandom(16)
                 iters=rint()
-                Pass_KDF=KDF(Password.encode() ,Salt,32,iters)
-                Pass_Hashed=hashpass(Salt,iters,Pass_KDF)
-                Fsize=filesize(Filename);bitscv=byteme(str(Fsize))
-                        
+                Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salt,32,iters),0)               
+                Pass_Hashed=hashpass(Salt,iters,Pass_KDF[0])
+                Fsize=filesize(Filename);bitscv=byteme(str(Fsize))     
                 fragbyte=isZipmp3rarother(Filename)
-
+                s_box=generate_sbox(seedfromKDF(Pass_KDF[0]))[0]
+                p_box=generate_pbox(16,seedfromKDF(Pass_KDF[0])+999)[0] 
                 if fragbyte==0.03:
                     posbyte=Fsize-int((Fsize*fragbyte))
                     fragdata=Filehandle(Filename,posbyte,int(Fsize*fragbyte))
@@ -287,6 +284,7 @@ def main():
                         fragdata=Filehandle(Filename,posbyte,Fsize)
                         Type_file="Plain Text";fragbyte=1          
                 
+                            
                 intro()
                 lprint("\n║ENCRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
                 lprint(f"\n| Total Files Encrypted:✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")
@@ -298,17 +296,32 @@ def main():
                 lprint("✅") 
                 lprint("\n■Encrypting...")
                 if "GB" in bitscv:lprint("It may take a while....")
-                encryptdata=dpj_e(fragdata,Pass_KDF,iv)  
-                hmc= hmac.new(Pass_KDF, encryptdata, hashlib.sha256).digest()
+                encryptdata=dpj_e(fragdata,Pass_KDF,iv,s_box,p_box)  
+                if encryptdata[1]>0:
+                    encrypted=encryptdata[0][:-encryptdata[1]]
+                    padded_bytes=encryptdata[0][len(encrypted):]
+                    encryptdata=encrypted
                 lprint("✅")   
-                stdout.write("\n■Patching...")
-                dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+'","posbytes":"'+str(posbyte).rjust(15,"*")+'","tarbytes":"'+str(ldata).rjust(15,"*")+'","date":"'+str(datetime.now().date()).rjust(10,"*")+'","iv":"'+str(iv.hex()).rjust(32,"*")+'","hmac":"'+str(hmc.hex()).rjust(64,"*")+'","pass":"'+str(Pass_Hashed.hex()).rjust(108,"*")+'","integrity":"'+str(F_hashed.hex()).rjust(64,"*")+'","os":"'+platform.system().rjust(12,"*")+'","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
-                Metadatax=Fernet(MetaKey+b'=').encrypt(dpj_dict)        
+            
+                hmc= hmac.new(Pass_KDF[0], encryptdata, hashlib.sha256).digest()
+                lprint("\n■Patching...")
+                dpj_dict=('{"#DPJ":"!CDXY","file":"'+Fn_clear(path.basename(Filename)).rjust(45,"*")+
+                          '","padding":"'+str(padded_bytes.hex()).rjust(80,"*") +
+                          '","posbytes":"'+str(posbyte).rjust(15,"*")+
+                          '","tarbytes":"'+str(ldata).rjust(15,"*")+
+                          '","date":"'+str(datetime.now().date()).rjust(10,"*")+
+                          '","iv":"'+str(iv.hex()).rjust(32,"*")+
+                          '","hmac":"'+str(hmc.hex()).rjust(64,"*")+
+                          '","pass":"'+str(Pass_Hashed.hex()).rjust(108,"*")+
+                          '","integrity":"'+str(F_hashed.hex()).rjust(64,"*")+
+                          '","os":"'+platform.system().rjust(12,"*")+
+                          '","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
+                         
+                Metadatax=Fernet(MetaKey+b'=').encrypt(dpj_dict).strip(b'=')+invertbytes(MetaKey)       
                 FTarget=open(Filename,"rb+")
                 FTarget.seek(posbyte)
                 FTarget.write(encryptdata)
                 FTarget.seek(Fsize) 
-                FTarget.write(MetaKey)
                 FTarget.write(Metadatax)
                 FTarget.close
                 fragdata="";encryptdata=bytearray()
@@ -407,7 +420,6 @@ def main():
             print("Press [ENTER] to start the decryption...")
             keypress('enter')  
             
-        lp=len(Password)
         lentarg=len(targets)     
         for scf,Filename in enumerate(targets):
             lprint(f"\n■Reading Next File #{scf}: {path.basename(Filename.upper())}...")
@@ -417,22 +429,25 @@ def main():
             iv=bytes.fromhex(headinfo['iv'])
             hmc=bytes.fromhex(headinfo['hmac'])
             F_hashed=bytes.fromhex(headinfo["integrity"])
+            padded_bytes=bytes.fromhex(headinfo["padding"].replace("*",""))
             iters=passhashed[0]
             Salted=passhashed[1]
             hkey=passhashed[2] 
-            Pass_KDF=KDF(Password.encode(),Salted,32,iters)
+            Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salted,32,iters),0)           
             bitscv=byteme(str(AFsize)) 
             Fsize=int(headinfo["size"].replace("*",""))
             BytesTarget=int(headinfo["tarbytes"].replace("*","")) 
             BytesPosition=int(headinfo["posbytes"].replace("*",""))      
-            fragdata=Filehandle(Filename,BytesPosition,BytesTarget)             
-            ispass=Pass_KDF==hkey
-            ishmac=hmac.new(Pass_KDF,fragdata,hashlib.sha256).digest()==hmc
+            fragdata=Filehandle(Filename,BytesPosition,BytesTarget)           
+            ispass=Pass_KDF[0]==hkey
+            ishmac=hmac.new(Pass_KDF[0],fragdata,hashlib.sha256).digest()==hmc
+            
             if ispass:
                 if ishmac:
                     lprint("✅")
-                    try:                
-                                            
+                    try:      
+                        invs_box=generate_sbox(seedfromKDF(Pass_KDF[0]))[1]
+                        invp_box=generate_pbox(16,seedfromKDF(Pass_KDF[0])+999)[1]                               
                         intro()    
                         lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
                         lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
@@ -441,7 +456,7 @@ def main():
                         lprint(f"\n| Size: {bitscv}") 
                         lprint("\n■Decrypting...")  
                         if "GB" in bitscv or "TB" in bitscv:lprint("It may take a while...")                 
-                        decryptdata=dpj_d(fragdata,Pass_KDF,iv)  
+                        decryptdata=dpj_d(fragdata,Pass_KDF,iv,invs_box,invp_box,padded_bytes)
                         lprint("✅" )  
                         lprint("\n■Checking Data's Integrity...")
                         integrity=hashlib.sha256(decryptdata).digest()== F_hashed
@@ -522,9 +537,7 @@ def main():
                 lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                 lprint(f"\n| Target: 📝{path.basename(Filename)}")
                 lprint(f"\n| Size: {bitscv}")        
-        
-        
-        
+           
         intro()
         if len(sucessed)>0 and len(notsucessed)==0:titledone="|DONE DECRYPTING...😃" 
         if len(sucessed)>0 and len(notsucessed)>0:titledone="|DONE DECRYPTING BUT...😱" 
