@@ -1,6 +1,5 @@
 #  -*- coding: utf-8 -*-
 from .utils import *
-
 def main():   
    
     Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
@@ -186,7 +185,7 @@ def main():
                         ctf+=1
                         lprint(f"\n\n{ctf})[✔️{path.basename(xc).upper()}]")
                         lprint(f"\n■📄Original Filename:{idinfo["file"].replace("*","")}")                       
-                        lprint(f"\n■📐Size:{byteme(idinfo["size"].replace("*",""))}")
+                        lprint(f"\n■📐Size:{byteme(int(idinfo["size"].replace("*","")))}")
                         lprint(f"\n■⚙️Checksum:{idinfo["integrity"].upper()}") 
                         lprint(f"\n■📆Date Encrypted:{idinfo["date"].replace("*","")}")
                         lprint(f"\n■💻OS:{idinfo["os"].replace("*","")}\n")        
@@ -264,7 +263,7 @@ def main():
                 iters=rint()
                 Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salt,32,iters),0)               
                 Pass_Hashed=hashpass(Salt,iters,Pass_KDF[0])
-                Fsize=filesize(Filename);bitscv=byteme(str(Fsize))     
+                Fsize=filesize(Filename);bitscv=byteme(Fsize)     
                 fragbyte=isZipmp3rarother(Filename)
                 s_box=generate_sbox(seedfromKDF(Pass_KDF[0]))[0]
                 p_box=generate_pbox(16,seedfromKDF(Pass_KDF[0])+999)[0] 
@@ -434,7 +433,7 @@ def main():
             Salted=passhashed[1]
             hkey=passhashed[2] 
             Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salted,32,iters),0)           
-            bitscv=byteme(str(AFsize)) 
+            bitscv=byteme(AFsize) 
             Fsize=int(headinfo["size"].replace("*",""))
             BytesTarget=int(headinfo["tarbytes"].replace("*","")) 
             BytesPosition=int(headinfo["posbytes"].replace("*",""))      
