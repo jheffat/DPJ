@@ -1,5 +1,6 @@
 #  -*- coding: utf-8 -*-
 from .utils import *
+
 def main():   
    
     Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
@@ -229,7 +230,7 @@ def main():
             print("Type 'a'+ [ENTER] to generate a RANDOM Passphrase")
             print("Type 'q'+ [ENTER] to CANCEL\n")   
             while state!=True:
-                Password=input("|🗝️PASSPHRASE:")
+                Password=prompt("|🗝️PASSPHRASE:", is_password=True)
                 state=ValidPass(Password)      
                 if state==False:
                     print("""🚩  Must have at least:
@@ -245,13 +246,21 @@ def main():
                     Password=genpass(18,5,4)
                 print(f"-> Passphrase generated: {Password}")
                 print("Please write it down before the encryption start." )
-                print("Press [ENTER] to continue...")
-                keypress('enter')    
+                print("Press [ENTER] to Start...")
+                print("Press [ESC] to Cancel...")
+                while True:
+                    k=keypress()
+                    if k in ('\r','\n'):break  
+                    if k=='\x1b':exit('Canceled...')  
         else:
             print(f"-> Passphrase: {Password}")
             print("Please write it down before the encryption start." )
-            print("Press [ENTER] to continue...")
-            keypress('enter')    
+            print("Press [ENTER] to Start...")
+            print("Press [ESC] to Cancel...")    
+            while True:
+                k=keypress()
+                if k in ('\r','\n'):break  
+                if k=='\x1b':exit('Canceled...')       
        
         lentarg=len(targets) 
         disclaimer(Password) 
@@ -404,7 +413,7 @@ def main():
             
             print("Type 'q'+[ENTER] to CANCEL\n")
             while state!=True:
-                Password=input("|🗝️PASSPHRASE:")
+                Password=prompt("|🗝️PASSPHRASE:", is_password=True)
                 state=ValidPass(Password)      
                 if state==False:
                     print("""🚩 Passphrase Must have at least:
@@ -416,8 +425,12 @@ def main():
             if Password.lower()=="q" or Password.lower()=="a":exit("***process canceled...***")      
         else:
             print(f"-> Passphrase: {Password}")
-            print("Press [ENTER] to start the decryption...")
-            keypress('enter')  
+            print("Press [ENTER] to Start...")
+            print("Press [ESC] to Cancel...")      
+            while True:
+                k=keypress()
+                if k in ('\r','\n'):break  
+                if k=='\x1b':exit('Canceled...')  
             
         lentarg=len(targets)     
         for scf,Filename in enumerate(targets):
@@ -466,8 +479,12 @@ def main():
                             print("\n☢️|CheckSum didn't match...")
                             print("[I]gnore the warning, try to decrypt the file and keep an original copy.")
                             print("[S]kip this file, do not decrypt it and continue to the next....")
-                            while k!='I' and k!= 'S':
-                                k=keyboard.read_key().upper()
+                            print("Press [ESC] to Cancel...")
+                            while True:
+                                k=keypress()
+                                if k in ('s','S'):break  
+                                if k in ('i','I'):break 
+                            k=k.upper()
                             if k=="S":
                                 notsucessed+=[{"Filename": path.basename(Filename),"error" : "CheckSUM Didn't match"}]
                                 FTarget="";decryptdata=bytearray();fragdata=b""

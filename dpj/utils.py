@@ -5,11 +5,30 @@ from random import shuffle,randint,seed
 from string import ascii_letters,digits
 import numpy as np
 from os import system,path,urandom #,getuid #<---Only for Linux/MacOSX
-import glob, platform,re,keyboard,argparse,hashlib,time,hmac,base64
+import glob, platform,re,argparse,hashlib,time,hmac,base64
 from json import loads
 from secrets import choice
-from sys import exit,stdout
+from sys import exit,stdout,stdin
 from datetime import datetime
+from prompt_toolkit import prompt
+#use one of these modules for key press; msvcrt for windows & tty/termios Linux
+try:
+    import msvcrt  
+    def keypress():
+        return msvcrt.getch().decode()
+except ImportError:
+    import tty
+    import termios
+    def keypress():
+        fd = stdin.fileno()
+        old = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            return stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old)
+
+
 def padding(data: np.ndarray, block_size: int = 16) -> np.ndarray:
     pad_len = block_size - (len(data) % block_size)
     if pad_len == 0:
@@ -172,8 +191,6 @@ def genpass(l,n,s):
     shuffle(chars)
     return "".join(chars)
 
-def keypress(key):
-    keyboard.wait(key)
 def ValidPass(Passwd):
     if Passwd=="q" or Passwd=="Q":return True
     if Passwd=="a" or Passwd=="A":return True
@@ -245,7 +262,7 @@ def intro():
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.5.3  (05/04/2025)
+| |_| ||  __/| |_| |     📊: 3.5.5  (05/04/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.""" )                                                     
 def disclaimer(p):
@@ -278,9 +295,10 @@ def disclaimer(p):
     
     key_p=0
     while True:
-            if keyboard.is_pressed('enter'): break
-            if keyboard.is_pressed('P') and key_p==0: print("--->Your Password:"+p);key_p=1    
-            if keyboard.is_pressed('esc'): exit("Canceled...") 
+            k=keypress()
+            if k in ('\r','\n'):break  
+            if k in ('p','P') and key_p==0: print("--->Your Password:"+p);key_p=1    
+            if k=='\x1b': exit("Canceled...") 
 
 def helpscr(): 
     print("""EXAMPLE: 
@@ -292,6 +310,3 @@ def helpscr():
           dpj -sh *.* -a shake_256  -->Hash all files using algorithm SHAKE_256
           """)
 global MetaKey
-
-
-#Developed by Jheff Mat(iCODEXYS) since 02-11-2021
