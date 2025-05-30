@@ -53,7 +53,7 @@ I’m using a custom-built encryption scheme that applies multilayer linear and 
 DPJ improves on Fixor with significantly faster encryption and decryption processes, optimized for modern systems and large files.
 
 ## ⚠️ Disclaimer
-**DPJ is a secure encryption tool intended for responsible use.**
+**DPJ is an encryption tool intended for responsible use.**
 By using this software, you acknowledge and accept the following:
 
 -You are solely responsible for managing your passwords, keys, and encrypted data.
