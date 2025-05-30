@@ -5,14 +5,14 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 setup(
     name="dpj",  # Name of the package
-    version="3.5.3",  # Version of the package
+    version="3.5.5",  # Version of the package
     description="A CLI Encryption Application",
     #long_description=open('README.md').read().encode('utf-8'),  # README file for project description
     long_description=long_description,
     long_description_content_type="text/markdown",  # Format of the README
     author="Jheff MAT",  # Author information
     author_email="Jheff.at@gmail.com",  # Author's email
-    url="https://github.com/jheffat/-DPJ",  # URL to the project
+    url="https://github.com/jheffat/DPJ",  # URL to the project
     packages=find_packages(),  # Automatically find packages (dpj, tests, etc.)
     classifiers=[
         "Programming Language :: Python :: 3",

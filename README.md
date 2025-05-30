@@ -6,7 +6,7 @@
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🛠️: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.5.4  (05/04/2025)
+| |_| ||  __/| |_| |     📊: 3.5.5  (05/30/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.
 
@@ -21,7 +21,7 @@
 
 The original name, Fixor, was chosen because the first version of the tool used only XOR-based encryption with a fixed key in 2021. As the project evolved to include more advanced cryptographic mechanisms, the name no longer reflected its capabilities.
 
-DPJ has a deeper significance: it was the name of my first encryption tool [DPJ Basic](https://github.com/jheffat/DPJ/blob/main/scrnsht/DPJ%20Basic%20by%20VB.png), created in 2001 with QBASIC(CLI), later in 2005 with VB(GUI). Bringing the name back honors that origin while also marking the maturity of this version.
+DPJ has a deeper significance: it was the name of my first encryption tool [DPJ Basic](https://raw.githubusercontent.com/jheffat/DPJ/main/scrnsht/DPJ%20Basic%20by%20VB.png), created in 2001 with QBASIC(CLI), later in 2005 with VB(GUI). Bringing the name back honors that origin while also marking the maturity of this version.
 
 This release marks a turning point — DPJ is no longer a simple XOR tool, but a full encryption system with real IV, linear & nonlinear complexity...
 
@@ -29,7 +29,8 @@ This release marks a turning point — DPJ is no longer a simple XOR tool, but a
 
 ## 🧾 Features
 
-- 🔒 **Fast Encrypt & Decrypt Files**, using custom-built  encryption.
+- 🔒 **Fast Encrypt & Decrypt Files**, using custom-built encryption.
+- ✳️ **Secure password input with masking** (hidden as you type).
 - 🌀 **Nonlinear Transformation Support**, Integrated AES-like S-box, P-box, XOR mixing & byte inversion. Improves resistance to differential and linear cryptanalysis.
 - ⚡ **IV Support**,  Uses a cryptographically secure IV to ensure ciphertext uniqueness, even with the same key and plaintext.
 - 🧠 **Choose or Autogenerate Passphrase**, for encryption
@@ -44,7 +45,7 @@ This release marks a turning point — DPJ is no longer a simple XOR tool, but a
 - #️⃣ **Hash tools included**, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
 
 ## ☠️Please Note!
-I’m using a custom-built encryption scheme that applies multilayer linear and nonlinear transformations. Many of these layers are inspired by real-world cryptographic algorithms such as AES (see more in CHANGELOG.md). 😱 However, it has not yet been reviewed by a professional cryptographer. For now, this option is intended for educational purposes only until it can be professionally reviewed. I’m currently rebuilding DPJ to support AES encryption as a second option, offering a more secure and reliable method widely used in both industry and cybercrime. The reason I built this tool from scratch(without relying on external modules) is to deepen my understanding of how encryption works, enhance my learning, and improve my problem-solving skills.
+I’m using a custom-built encryption scheme that applies multilayer linear and nonlinear transformations. Many of these layers are inspired by real-world cryptographic algorithms such as AES (see more in CHANGELOG.md).However 😱, it has not yet been reviewed by a professional cryptographer. For now, this option is intended for educational purposes only until it can be professionally reviewed. I’m currently rebuilding DPJ to support AES encryption as a second option, offering a more secure and reliable method widely used in both industry and cybercrime. The reason I built this tool from scratch(without relying on external modules) is to deepen my understanding of how encryption works, enhance my learning, and improve my problem-solving skills.
 
 
 ## 🚀 Performance
@@ -52,7 +53,7 @@ I’m using a custom-built encryption scheme that applies multilayer linear and 
 DPJ improves on Fixor with significantly faster encryption and decryption processes, optimized for modern systems and large files.
 
 ## ⚠️ Disclaimer
-**DPJ is a encryption tool intended for responsible use.**
+**DPJ is a secure encryption tool intended for responsible use.**
 By using this software, you acknowledge and accept the following:
 
 -You are solely responsible for managing your passwords, keys, and encrypted data.
@@ -82,10 +83,10 @@ pip install dpj
   ++By download and install executable for:
 
 `*Windows`
-[DPJ 3.5.3 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.5.3%20Installer.exe)  (Need to setup your anti-virus to allow using this app)
+[DPJ 3.5.5 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.5.5%20Installer.exe)  (Need to setup your anti-virus to allow using this app)
 
 `*Linux Debian`
-[DPJ_353LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.5.3%20Installer.deb) (Link Dead**Fixing...)
+[DPJ_355LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.5.5%20Installer.deb) (Link Dead**Fixing...)
 
    ```bash
    sudo dpkg -i DPJ_353LinuxDeb.deb

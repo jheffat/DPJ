@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dpj"
-version = "3.5.3"
+version = "3.5.5"
 description = "A simple CLI tool for encrypting/hashing files and strings."
 readme = "README.md"
 requires-python = ">=3.7"
 license = {file = "LICENSE"}
 authors = [
   {name = "Jheff AT", email = "jheff.at@gmail.com"},]
-dependencies = ['keyboard','argparse']
+dependencies = ['prompt_toolkit','argparse']
 
 [project.scripts]
 dpj = "dpj.cli:main"   # Make `dpj` a CLI command

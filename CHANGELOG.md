@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [3.5.2] - 2025-30-04
+## [3.5.5] - 2025-08-05
+### Added
+- *Password masking* during input for enhanced security.
+### Changed
+- *Improved key press handling*, ensure key input only affects the current terminal session.
+*
+
+
+## [3.5.2] - 2025-08-05
 ### Added
 - *Key Schedule*, a process that expands the main encryption key(KDF) into multiple round keys used throughout the encryption rounds to enhance security. 
 - *Nonlinear transformation*, Improves resistance to differential and linear cryptanalysis
