@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [3.5.5] - 2025-08-05
+## [3.5.5] - 2025-30-05
 ### Added
 - *Password masking* during input for enhanced security.
 ### Changed
