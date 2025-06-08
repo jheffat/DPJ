@@ -6,7 +6,7 @@
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🛠️: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.6.0  (05/30/2025)
+| |_| ||  __/| |_| |     📊: 3.6.0  (06/07/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.
 
