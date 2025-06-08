@@ -83,10 +83,10 @@ pip install dpj
   ++By download and install executable for:
 
 `*Windows`
-[DPJ 3.5.5 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.5.5%20Installer.exe)  (Need to setup your anti-virus to allow using this app)
+[DPJ 3.6.0 Installer.exe](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.6.0%20Installer.exe)  (Need to setup your anti-virus to allow using this app)
 
 `*Linux Debian`
-[DPJ_355LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.5.5%20Installer.deb) (Link Dead**Fixing...)
+[DPJ_360LinuxDeb.deb](https://raw.githubusercontent.com/jheffat/DPJ/main/Bins/DPJ%203.6.0%20Installer.deb) (Link Dead**Fixing...)
 
    ```bash
    sudo dpkg -i DPJ_353LinuxDeb.deb
