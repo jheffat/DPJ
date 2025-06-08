@@ -3,9 +3,8 @@ from .utils import *
 
 def main():   
    
-    Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
+    rkeyl={0:'Basic',5:'Standard',10:'Advanced'};Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
     MetaKey=base64.b64encode(KDF(genpass(18,9,7).encode(),urandom(18),32,200000)).strip(b'=')
-    PADDING_BYTES=bytes()
     if platform.system()!="Windows":
         if getuid()>0:
             print("--Permission denied--x_x")
@@ -55,7 +54,7 @@ def main():
                     
             if path.isfile(valuex):
                 targets=valuex  
-                print("\n║HASHING A FILE╠"+"═"*60+"╣")    
+                print("\n===| HASHING A FILE |===")    
                 try:               
                     data=Filehandle(targets,0,-1) 
                     start_time = time.time() 
@@ -96,7 +95,7 @@ def main():
                     targets=recursive(valuex)
                 else:
                     targets=glob.glob(valuex)   
-                print("\n║HASHING FILES╠"+"═"*60+"╣")
+                print("\n===| HASHING FILES |===")
                 start_time=time.time() 
                 for f in targets: 
                         try:               
@@ -137,7 +136,7 @@ def main():
                 exit("Done...")                                                      
             else:
                 targets=valuex 
-                print("\n║HASHING TEXT STRING╠"+"═"*60+"╣")
+                print("\n===| HASHING TEXT STRING |===")
                 start_time=time.time()
                 if args.algo!='all':
                     hashfunction.update(targets.encode('utf-8')) 
@@ -176,15 +175,15 @@ def main():
     
     if args.key: Password=args.key    
     if argx=="scan":
-        intro()  
+        intro()
         ctf=0
-        print("\n║DETAILS OF ENCRYPTED FILES╠"+"═"*60+"╣\n")
+        print("\n===| DETAILS OF ENCRYPTED FILES |===\n")
         for xc in targets:
             try:
                 if len(isencrypted(xc))>0:
                         idinfo=isencrypted(xc)
                         ctf+=1
-                        lprint(f"\n\n{ctf})[✔️{path.basename(xc).upper()}]")
+                        lprint(f"\n[{ctf}]║🔒{path.basename(xc).upper()}╠".ljust(87,"═")+"╣")
                         lprint(f"\n■📄Original Filename:{idinfo["file"].replace("*","")}")                       
                         lprint(f"\n■📐Size:{byteme(int(idinfo["size"].replace("*","")))}")
                         lprint(f"\n■⚙️Checksum:{idinfo["integrity"].upper()}") 
@@ -201,13 +200,13 @@ def main():
             exit(f"\nEncrypted Files not Found...")
 
     if argx=="encrypt":
-        intro() 
-        print("\n║TARGET'S LIST╠"+"═"*60+"╣\n")
+        intro()
+        print("\n===| TARGET'S LIST |===\n")
         ctf=0
         for xc in targets:
             try:
                 if len(isencrypted(xc))>0:     
-                    banfilels+=[xc];emoj="🔐"
+                    banfilels+=[xc]
                 else:
                     ctf+=1
                     print(f"{ctf}# FILE:[✔️📄 {path.basename(xc)}]")   
@@ -226,7 +225,7 @@ def main():
                     >>>⛓  12 or more Characters
                     """)
             else:
-                print("Type a Passphrase to encrypt the Target's List")
+                print("\n===| Type a Passphrase to encrypt the Target's List |===\n")
             print("Type 'a'+ [ENTER] to generate a RANDOM Passphrase")
             print("Type 'q'+ [ENTER] to CANCEL\n")   
             while state!=True:
@@ -244,9 +243,9 @@ def main():
                 Password=genpass(18,5,4)
                 while ValidPass(Password)!=True:
                     Password=genpass(18,5,4)
-                print(f"-> Passphrase generated: {Password}")
+                print(f"-> Passphrase generated!: {Password}")
                 print("Please write it down before the encryption start." )
-                print("Press [ENTER] to Start...")
+                print("Press [ENTER] to Continue...")
                 print("Press [ESC] to Cancel...")
                 while True:
                     k=keypress()
@@ -255,13 +254,44 @@ def main():
         else:
             print(f"-> Passphrase: {Password}")
             print("Please write it down before the encryption start." )
-            print("Press [ENTER] to Start...")
+            print("Press [ENTER] to Continue...")
             print("Press [ESC] to Cancel...")    
             while True:
                 k=keypress()
                 if k in ('\r','\n'):break  
                 if k=='\x1b':exit('Canceled...')       
-       
+        
+        print("\n===| Choose a cryptographic method from the options below |===\n")
+        print("[1]->Custom/Standards-based cipher(S-box, P-box, byte-level inversion,key expansion, IV etc...)")
+        print("[2]->AES-128 CBC Mode(strong, industry-standard encryption)-->AVALAIBLE SOON!")
+        while True:
+            k=keypress()
+            if k=='1':
+                methodcrypt='Standards-based'
+                break
+            if k=='2':
+                methodcrypt='AES-128 CBC Mode'
+                break
+            
+        print("\n===| Key Expansion Configuration |===")
+        print("Select the round key level:\n")
+        print("[1]->Basic:    - Default, faster encryption")
+        print("[2]->Standard: - Balanced performance and security")
+        print("[3]->Advanced: - More rounds, stronger security")
+        print("\n⚠️ More rounds =>stronger encryption, but slower processing.")
+        while True:
+            k=keypress()
+            if k=='1':
+                round_key=0
+                break
+            if k=='2':
+                round_key=5
+                break
+            if k=='3':
+                round_key=10
+                break              
+            
+            
         lentarg=len(targets) 
         disclaimer(Password) 
         lprint("\n| Starting...")
@@ -270,7 +300,7 @@ def main():
                 Salt=urandom(16)
                 iv=urandom(16)
                 iters=rint()
-                Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salt,32,iters),0)               
+                Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salt,32,iters),round_key)               
                 Pass_Hashed=hashpass(Salt,iters,Pass_KDF[0])
                 Fsize=filesize(Filename);bitscv=byteme(Fsize)     
                 fragbyte=isZipmp3rarother(Filename)
@@ -293,17 +323,17 @@ def main():
                         Type_file="Plain Text";fragbyte=1          
                 
                             
-                intro()
+                cleanscreen()
                 lprint("\n║ENCRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
                 lprint(f"\n| Total Files Encrypted:✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")
                 lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),' % '+f"{((scf/lentarg)*100):.1f}"))
                 lprint(f"\n| Target: 📝{path.basename(Filename)}")
-                lprint(f"\n| Size: {bitscv}  | Type: [{Type_file}]")  
+                lprint(f"\n| Size: {bitscv}  | Type: [{Type_file}] | KeyLevel: [{rkeyl[round_key]}] | Algorithm: [{methodcrypt}]")  
                 lprint("\n■Hashing Data...")  
                 F_hashed=hashlib.sha256(Filehandle(Filename,posbyte,int(Fsize*fragbyte))).digest()
                 lprint("✅") 
                 lprint("\n■Encrypting...")
-                if "GB" in bitscv:lprint("It may take a while....")
+                if "GB" or "TB" in bitscv:lprint("It may take a while....")
                 encryptdata=dpj_e(fragdata,Pass_KDF,iv,s_box,p_box)  
                 if encryptdata[1]>0:
                     encrypted=encryptdata[0][:-encryptdata[1]]
@@ -319,12 +349,14 @@ def main():
                           '","tarbytes":"'+str(ldata).rjust(15,"*")+
                           '","date":"'+str(datetime.now().date()).rjust(10,"*")+
                           '","iv":"'+str(iv.hex()).rjust(32,"*")+
+                          '","rkey":"'+str(round_key).rjust(2,"*")+
+                          '","algo":"'+methodcrypt.rjust(17,"*")+
                           '","hmac":"'+str(hmc.hex()).rjust(64,"*")+
                           '","pass":"'+str(Pass_Hashed.hex()).rjust(108,"*")+
                           '","integrity":"'+str(F_hashed.hex()).rjust(64,"*")+
                           '","os":"'+platform.system().rjust(12,"*")+
                           '","size":"'+str(Fsize).rjust(15,"*")+'"}').encode()
-                         
+           
                 Metadatax=Fernet(MetaKey+b'=').encrypt(dpj_dict).strip(b'=')+invertbytes(MetaKey)       
                 FTarget=open(Filename,"rb+")
                 FTarget.seek(posbyte)
@@ -347,9 +379,9 @@ def main():
                             print("***Encrypted\n")
                             for ln in range(0,lensuc,3):
                                 if ln+2<lensuc:
-                                    print(f"{ln+1})--🔐File:{sucessed[ln]['Filename']}     {ln+2})--🔐File:{sucessed[ln+1]['Filename']}     {ln+3})--🔐File:{sucessed[ln+2]['Filename']}")                    
+                                    print(f"{ln+1})--🔒File:{sucessed[ln]['Filename']}     {ln+2})--🔐File:{sucessed[ln+1]['Filename']}     {ln+3})--🔐File:{sucessed[ln+2]['Filename']}")                    
                                 else:
-                                    print(f"{ln+1})--🔐File:{sucessed[ln]['Filename']}" )
+                                    print(f"{ln+1})--🔒File:{sucessed[ln]['Filename']}" )
                             print(f"✔️{lensuc} Files Encrypted ")
                             print(f"🚫{lentarg-lensuc} Files Not Encrypted ")                      
                     if len(notsucessed)>0:
@@ -359,9 +391,9 @@ def main():
                             print(f"❌ {len(notsucessed)}Files Failed to Encrypt...\n")               
                     exit("Terminated...")
                     
-        intro()    
-        if lensuc>0 and len(notsucessed)==0:titledone="|DONE ENCRYPTING...😃" 
-        if lensuc>0 and len(notsucessed)>0:titledone="|DONE ENCRYPTING BUT...😱" 
+           
+        if lensuc>0 and len(notsucessed)==0:titledone="|DONE ENCRYPTING...🔒😃" 
+        if lensuc>0 and len(notsucessed)>0:titledone="|DONE ENCRYPTING BUT...🔒😱" 
         if lensuc==0 and len(notsucessed)>0:titledone="|ENCRYPTION PROCESS FAILED...❌"       
         print(f"\n{titledone}\n")  
         print("|Result:\n")    
@@ -369,9 +401,9 @@ def main():
                     print("***Encrypted List\n")
                     for ln in range(0,lensuc,3):
                         if ln+2<lensuc:
-                            print(f"{ln+1})--🔐File:{sucessed[ln]['Filename']}     {ln+2})--🔐File:{sucessed[ln+1]['Filename']}     {ln+3})--🔐File:{sucessed[ln+2]['Filename']}")                    
+                            print(f"{ln+1})--🔒File:{sucessed[ln]['Filename']}     {ln+2})--🔒File:{sucessed[ln+1]['Filename']}     {ln+3})--🔒File:{sucessed[ln+2]['Filename']}")                    
                         else:
-                            print(f"{ln+1})--🔐File:{sucessed[ln]['Filename']}" )            
+                            print(f"{ln+1})--🔒File:{sucessed[ln]['Filename']}" )            
                     
         if len(notsucessed)>0:
                     print("\n***Failed List\n")
@@ -384,14 +416,14 @@ def main():
         exit("Done!")
         
     if argx=="decrypt":
-        intro()  
-        print("\n║TARGET'S LIST╠"+"═"*60+"╣\n") 
+        intro()
+        print("\n===| TARGET'S LIST |===\n") 
         ctf=0  
         for xc in targets:
             try:   
                 if len(isencrypted(xc))>0:
                     ctf+=1
-                    print(f"{ctf}# FILE:[🔐📄{path.basename(xc)}]")
+                    print(f"{ctf}# FILE:[🔒{path.basename(xc)}]")
                 else: 
                     banfilels+=[xc]                   
             except IOError as errz:
@@ -409,7 +441,7 @@ def main():
                 >>>⛓  12 or more Characters
                     """) 
             else:
-                print("Type a passphrase to decrypt the Target's List")
+                print("\n===| Type a passphrase to decrypt the Target's List |===\n")
             
             print("Type 'q'+[ENTER] to CANCEL\n")
             while state!=True:
@@ -425,6 +457,7 @@ def main():
             if Password.lower()=="q" or Password.lower()=="a":exit("***process canceled...***")      
         else:
             print(f"-> Passphrase: {Password}")
+            print("Please write it down before the decryption start." )
             print("Press [ENTER] to Start...")
             print("Press [ESC] to Cancel...")      
             while True:
@@ -439,13 +472,15 @@ def main():
             headinfo=isencrypted(Filename) 
             passhashed=hashparser(bytes.fromhex(headinfo["pass"]))
             iv=bytes.fromhex(headinfo['iv'])
+            round_key=int(headinfo['rkey'].replace("*",""))
             hmc=bytes.fromhex(headinfo['hmac'])
             F_hashed=bytes.fromhex(headinfo["integrity"])
             padded_bytes=bytes.fromhex(headinfo["padding"].replace("*",""))
+            methodcrypt=str(headinfo['algo'].replace("*",""))
             iters=passhashed[0]
             Salted=passhashed[1]
             hkey=passhashed[2] 
-            Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salted,32,iters),0)           
+            Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salted,32,iters),round_key)           
             bitscv=byteme(AFsize) 
             Fsize=int(headinfo["size"].replace("*",""))
             BytesTarget=int(headinfo["tarbytes"].replace("*","")) 
@@ -460,14 +495,14 @@ def main():
                     try:      
                         invs_box=generate_sbox(seedfromKDF(Pass_KDF[0]))[1]
                         invp_box=generate_pbox(16,seedfromKDF(Pass_KDF[0])+999)[1]                               
-                        intro()    
+                        cleanscreen()    
                         lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
                         lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
                         lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                         lprint(f"\n| Target: 📝{path.basename(Filename)}")
-                        lprint(f"\n| Size: {bitscv}") 
+                        lprint(f"\n| Size: {bitscv}  | KeyLevel: [{rkeyl[round_key]}] | Algorithm: [{methodcrypt}]")  
                         lprint("\n■Decrypting...")  
-                        if "GB" in bitscv or "TB" in bitscv:lprint("It may take a while...")                 
+                        if "GB" in bitscv:lprint("It may take a while...")                 
                         decryptdata=dpj_d(fragdata,Pass_KDF,iv,invs_box,invp_box,padded_bytes)
                         lprint("✅" )  
                         lprint("\n■Checking Data's Integrity...")
@@ -538,25 +573,25 @@ def main():
                 else:
                     lprint("⛔")
                     notsucessed+=[{"Filename":path.basename( Filename),"error" : "The encrypted data you're trying to decrypt has been changed or corrupted!"}]
-                    intro()    
+                    cleanscreen()    
                     lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
                     lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
                     lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                     lprint(f"\n| Target: 📝{path.basename(Filename)}")
-                    lprint(f"\n| Size: {bitscv}")
+                    lprint(f"\n| Size: {bitscv}  | KeyLevel: [{rkeyl[round_key]}] | Algorithm: [{methodcrypt}]")  
+                       
             else:
                 lprint("⛔")
                 notsucessed+=[{"Filename":path.basename( Filename),"error" : "Invalid passphrase!"}]
-                intro()    
+                cleanscreen()    
                 lprint("\n║DECRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
                 lprint(f"\n| Total Files Decrypted: ✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")      
                 lprint('\r[%s%s]%s ' % ('█' * int(scf*65/lentarg), '░'*(65-int(scf*65/lentarg)),f" Scanned {scf}/{lentarg}"))
                 lprint(f"\n| Target: 📝{path.basename(Filename)}")
-                lprint(f"\n| Size: {bitscv}")        
-           
-        intro()
-        if len(sucessed)>0 and len(notsucessed)==0:titledone="|DONE DECRYPTING...😃" 
-        if len(sucessed)>0 and len(notsucessed)>0:titledone="|DONE DECRYPTING BUT...😱" 
+                lprint(f"\n| Size: {bitscv}  | KeyLevel: [{rkeyl[round_key]}] | Algorithm: [{methodcrypt}]")  
+                              
+        if len(sucessed)>0 and len(notsucessed)==0:titledone="|DONE DECRYPTING...🔓😃" 
+        if len(sucessed)>0 and len(notsucessed)>0:titledone="|DONE DECRYPTING BUT...🔓😱" 
         if len(sucessed)==0 and len(notsucessed)>0:titledone="|DECRYPTION PROCESS FAILED...❌"   
         print(f"\n{titledone}\n")      
         print("|Result List:\n")

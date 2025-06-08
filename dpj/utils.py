@@ -224,9 +224,9 @@ def Filehandle(Filename,p,b):
 
 def isencrypted (fname):
     Fs=filesize(fname)
-    fragdata=Filehandle(fname,Fs-930,-1)
-    MetaKey=invertbytes(getbytes(fragdata,887,43))+b'='
-    metadata=fragdata[:887]+b'='
+    fragdata=Filehandle(fname,Fs-973,-1)
+    MetaKey=invertbytes(getbytes(fragdata,930,43))+b'='
+    metadata=fragdata[:930]+b'=='
     if isx(metadata,MetaKey)==True:
         try:        
             metadata=Fernet(MetaKey).decrypt(metadata).decode()
@@ -249,29 +249,25 @@ def isx(data, key):
             return False  
     except Exception:
         return False  
-        
-def intro():
+def cleanscreen():
     if platform.system()=='Linux':
         _ = system('clear')
     elif platform.system()=='Windows':
         _ = system("cls")
     else:
-        _ = system("clear")
-      
+        _ = system("clear")    
+         
+def intro():
+    cleanscreen()
     print(r"""
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🔨: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.5.5  (05/04/2025)
+| |_| ||  __/| |_| |     📊: 3.6.0  (06/07/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.""" )                                                     
 def disclaimer(p):
-    if platform.system()=='Linux':
-        _ = system('clear')
-    elif platform.system()=='Windows':
-        _ = system("cls")
-    else:
-        _ = system("clear")  
+    cleanscreen()
     print("""                            
     ██████╗ ██╗███████╗ ██████╗██╗      █████╗ ██╗███╗   ███╗███████╗██████╗ 
     ██╔══██╗██║██╔════╝██╔════╝██║     ██╔══██╗██║████╗ ████║██╔════╝██╔══██╗
@@ -280,7 +276,7 @@ def disclaimer(p):
     ██████╔╝██║███████║╚██████╗███████╗██║  ██║██║██║ ╚═╝ ██║███████╗██║  ██║
     ╚═════╝ ╚═╝╚══════╝ ╚═════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝     """)
     print("_"*80)
-    print("\n|⚠️| DPJ is a secure encryption tool intended for responsible use. ")
+    print("\n|⚠️| DPJ is an encryption tool intended for responsible use. ")
     print("By using this software, you acknowledge and accept the following:")
     print("*--->A Passphrase that you type or auto-generate, make sure to write it down...Press [P] to show it.") 
     print("*--->You are solely responsible for managing your passwords, keys, and encrypted data.")

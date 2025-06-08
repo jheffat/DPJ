@@ -3,13 +3,17 @@
 All notable changes to this project will be documented in this file.
 
 ---
-
+## [3.6.0] - 2025-07-06
+### Added
+- *Menu options*, To select the algorithm to encrypt but AES function is not added yet, also to select Key expansion Level (basic, standard, advanced).
+### Changed
+- *CLI Upgrade*: Switched to a friendlier and more interactive command-line interface to make the tool easier and more pleasant to use.
+- 
 ## [3.5.5] - 2025-30-05
 ### Added
 - *Password masking* during input for enhanced security.
 ### Changed
 - *Improved key press handling*, ensure key input only affects the current terminal session.
-*
 
 
 ## [3.5.2] - 2025-08-05

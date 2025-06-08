@@ -6,7 +6,7 @@
  ____   ____      _ 
 |  _ \ |  _  \   | |     🌍: https://icodexys.net
 | | | || |_) |_  | |     🛠️: https://github.com/jheffat/DPJ
-| |_| ||  __/| |_| |     📊: 3.5.5  (05/30/2025)
+| |_| ||  __/| |_| |     📊: 3.6.0  (05/30/2025)
 |____/ |_|    \___/ 
 **DATA PROTECTION JHEFF**, a Cryptographic Software.
 
@@ -15,7 +15,7 @@
 # 🔐 DPJ - CLI Data Cryptographic Tool
 
 **DPJ** is a command-line data encryption tool, an improvement of [Fixor](https://github.com/jheffat/-FiXOR) 2.50(Discontinued). The Name Fixor changed to DPJ 
- in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom-built methods. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.). -->✨ [Changelog](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)
+ in honor of the my first encryption tool developed in QBasic and Visual Basic (2003–2007), DPJ is faster, AES-Like secure, and packed with new features designed to keep your data safe. Is a lightweight CLI tool, encrypt/decrypt files securely using custom-built methods. Good tool to encrypt your work projects or your sensitive data(documents, PDFs, photos, videos, etc.). -->✨ [Changelog](https://github.com/jheffat/DPJ/blob/main/CHANGELOG.md)
 
 ## ❓Why the name change?
 
