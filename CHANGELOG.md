@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 ---
 ## [3.6.0] - 2025-07-06
 ### Added
-- *Menu options*, To select the algorithm to encrypt but AES function is not added yet, also to select Key expansion Level (basic, standard, advanced).
+- *Menu options*, To select the algorithm to encrypt but AES function still not functional. Also added to select Key expansion Level (basic, standard, advanced).
 ### Changed
 - *CLI Upgrade*: Switched to a friendlier and more interactive command-line interface to make the tool easier and more pleasant to use.
 - 
