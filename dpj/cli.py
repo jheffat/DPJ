@@ -5,9 +5,11 @@ def main():
    
     rkeyl={0:'Basic',5:'Standard',10:'Advanced'};Password="";targets=[];banfilels=[];sucessed=[];notsucessed=[] ;lensuc=0  ;decryptdata=bytearray();encryptdata=bytearray();state=False ;posbyte=0;k=""
     MetaKey=base64.b64encode(KDF(genpass(18,9,7).encode(),urandom(18),32,200000)).strip(b'=')
+    
     if platform.system()!="Windows":
+        
         if getuid()>0:
-            print("--Permission denied--x_x")
+            print("Permission denied. Try running as root or using sudo.")
             time.sleep(4)
             exit()
 #---------------> building the arguments for parameters    
@@ -302,7 +304,8 @@ def main():
                 iters=rint()
                 Pass_KDF=generate_round_keys(KDF(Password.encode() ,Salt,32,iters),round_key)               
                 Pass_Hashed=hashpass(Salt,iters,Pass_KDF[0])
-                Fsize=filesize(Filename);bitscv=byteme(Fsize)     
+                Fsize=filesize(Filename);bitscv=byteme(Fsize)   
+                one_gb = 1024 * 1024 * 1024  
                 fragbyte=isZipmp3rarother(Filename)
                 s_box=generate_sbox(seedfromKDF(Pass_KDF[0]))[0]
                 p_box=generate_pbox(16,seedfromKDF(Pass_KDF[0])+999)[0] 
@@ -321,8 +324,7 @@ def main():
                         ldata=(Fsize)
                         fragdata=Filehandle(Filename,posbyte,Fsize)
                         Type_file="Plain Text";fragbyte=1          
-                
-                            
+                                 
                 cleanscreen()
                 lprint("\n║ENCRYPTION PROCESS╠"+"═"*60+"╣[CTRL+C] Cancel the Process ║")  
                 lprint(f"\n| Total Files Encrypted:✔️ {lensuc} |Error Reading: ❌ {len(notsucessed)}\n")
@@ -333,7 +335,7 @@ def main():
                 F_hashed=hashlib.sha256(Filehandle(Filename,posbyte,int(Fsize*fragbyte))).digest()
                 lprint("✅") 
                 lprint("\n■Encrypting...")
-                if "GB" or "TB" in bitscv:lprint("It may take a while....")
+                if Fsize>= one_gb:lprint("It may take a while....")
                 encryptdata=dpj_e(fragdata,Pass_KDF,iv,s_box,p_box)  
                 if encryptdata[1]>0:
                     encrypted=encryptdata[0][:-encryptdata[1]]
@@ -502,7 +504,7 @@ def main():
                         lprint(f"\n| Target: 📝{path.basename(Filename)}")
                         lprint(f"\n| Size: {bitscv}  | KeyLevel: [{rkeyl[round_key]}] | Algorithm: [{methodcrypt}]")  
                         lprint("\n■Decrypting...")  
-                        if "GB" in bitscv:lprint("It may take a while...")                 
+                        if  Fsize>= one_gb:lprint("It may take a while...")                 
                         decryptdata=dpj_d(fragdata,Pass_KDF,iv,invs_box,invp_box,padded_bytes)
                         lprint("✅" )  
                         lprint("\n■Checking Data's Integrity...")
@@ -629,3 +631,4 @@ if __name__ == "__main__":
     main()    
 
 #Developed by Jheff Mat(iCODEXYS) 12/22/2022
+
