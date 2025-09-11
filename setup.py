@@ -19,7 +19,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.8",  # Adjust to the Python versions you support
     ],
-    install_requires=[ "cryptography>=3.0",  "argparse>=1.4" ,"prompt_toolkit"    
+    install_requires=[ "cryptography>=3.0",  "argparse>=1.4" ,"prompt_toolkit",    
     ],
     entry_points={  # CLI command entry points
         'console_scripts': [
