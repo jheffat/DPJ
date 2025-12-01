@@ -45,7 +45,7 @@ This release marks a turning point — DPJ is no longer a simple XOR tool, but a
 - #️⃣ **Hash tools included**, Hash files/Msg using any theses algorithms (blake2b, sha3_512, sha256, sha1,  sha512, shake_128, shake_256, sha3_256, blake2s, md5), In the absence of a specified algorithm, the default SHA256 will be applied.
 
 ## ☠️Please Note!
-I’m using a custom-built encryption scheme that applies multilayer linear and nonlinear transformations. Many of these layers are inspired by real-world cryptographic algorithms such as AES (see more in CHANGELOG.md).However 😱, it has not yet been reviewed by a professional cryptographer. For now, this option is intended for educational purposes only until it can be professionally reviewed. I’m currently rebuilding DPJ to support AES encryption as a second option, offering a more secure and reliable method widely used in both industry and cybercrime. The reason I built this tool from scratch(without relying on external modules) is to deepen my understanding of how encryption works, enhance my learning, and improve my problem-solving skills.
+I’m using a custom-built encryption scheme that applies multilayer linear and nonlinear transformations. Many of these layers are inspired by real-world cryptographic algorithms such as AES (see more in CHANGELOG.md). For now, this option is intended for educational purposes only until it can be professionally reviewed. I’m currently rebuilding DPJ to support AES encryption as a second option, offering a more secure and reliable method widely used in both industry and cybercrime. The reason I built this tool from scratch(without relying on external modules) is to deepen my understanding of how encryption works, enhance my learning, and improve my problem-solving skills.
 
 
 ## 🚀 Performance
@@ -143,3 +143,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙌 Acknowledgements
 DPJ(Data protection Jeff), was my first encryption app crafted in QBasic(CLI) and Visual Basic(GUI) between 2003–2007. This project is a modern revival with more power, speed, and security, thanks to the powerful language PYTHON. 
+
