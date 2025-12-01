@@ -142,5 +142,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 ## 🙌 Acknowledgements
-DPJ(Data protection Jeff), was my first encryption app crafted in QBasic(CLI) and Visual Basic(GUI) between 2003–2007. This project is a modern revival with more power, speed, and security, thanks to the powerful language PYTHON. 
+DPJ(Data protection Jeff), was my first encryption app crafted in QBasic(CLI) and Visual Basic(GUI) between 2001–2007. This project is a modern revival with more power, speed, and security, thanks to language PYTHON. 
+
 
